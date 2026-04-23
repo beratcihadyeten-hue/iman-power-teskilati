@@ -3,52 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPT | Ultimate Terminal</title>
+    <title>IPT | Elite Terminal V7</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="login-screen">
-        <div class="login-card">
-            <h1 class="glitch-text">İMANPOWER</h1>
-            <div class="auth-fields">
-                <input type="text" id="username" placeholder="OPERATÖR">
-                <input type="password" id="password" placeholder="ERİŞİM ŞİFRESİ">
+        <div class="glass-card">
+            <h1 class="scanline-text">İMANPOWER</h1>
+            <div class="auth-box">
+                <div class="input-wrap">
+                    <input type="text" id="username" placeholder="OPERATÖR KODU" autocomplete="off">
+                </div>
+                <div class="input-wrap">
+                    <input type="password" id="password" placeholder="GÜVENLİK ANAHTARI">
+                </div>
             </div>
-            <button onclick="checkLogin()" class="cyber-btn">SİSTEME SIZ</button>
+            <button onclick="checkLogin()" class="glow-btn">ERİŞİMİ ONAYLA</button>
         </div>
     </div>
 
     <div id="main-panel" style="display: none;">
-        <nav class="side-nav">
-            <div class="nav-header">IPT // V6 PRO</div>
-            <button onclick="showTab('chat-tab')" class="n-item active">📡 CANLI HAT</button>
-            <button onclick="showTab('ann-tab')" class="n-item">📢 DUYURULAR</button>
-            <button onclick="showTab('proj-tab')" class="n-item">📁 PROJELER</button>
-            <button onclick="location.reload()" class="logout-btn">🔴 BAĞLANTIYI KES</button>
-        </nav>
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">IPT</div>
+                <div class="status-indicator">
+                    <span class="dot pulse"></span>
+                    <span id="active-count">Yükleniyor...</span>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <button onclick="showTab('chat-tab')" class="nav-btn active">📡 SİNYAL HATTI</button>
+                <button onclick="showTab('ann-tab')" class="nav-btn">📢 BÜLTEN</button>
+                <button onclick="showTab('proj-tab')" class="nav-btn">📂 OPERASYONLAR</button>
+            </nav>
 
-        <main class="viewport">
+            <div class="user-info-card">
+                <div id="op-name">---</div>
+                <div id="op-location">📍 Konum Belirleniyor...</div>
+            </div>
+            
+            <button onclick="location.reload()" class="exit-link">🔴 BAĞLANTIYI KES</button>
+        </aside>
+
+        <main class="terminal-area">
             <div id="chat-tab" class="tab-content">
-                <div class="section-title">KRİPTOLU SOHBET BİRİMİ</div>
+                <div class="tab-header">ŞİFRELİ MESAJLAŞMA ÜNİTESİ</div>
                 <div id="chat-display"></div>
-                <div class="chat-controls">
-                    <input type="text" id="chat-message" placeholder="Mesajını ilet..." onkeypress="if(event.key==='Enter') sendLiveMessage()">
-                    <button onclick="sendLiveMessage()">GÖNDER</button>
+                <div class="input-bar">
+                    <input type="text" id="chat-message" placeholder="Komut ilet..." onkeypress="if(event.key==='Enter') sendLiveMessage()">
+                    <button onclick="sendLiveMessage()">AKTARIYI BAŞLAT</button>
                 </div>
             </div>
 
             <div id="ann-tab" class="tab-content" style="display: none;">
-                <div class="section-title">MERKEZİ DUYURULAR</div>
-                <div id="ann-list"></div>
+                <div class="tab-header">MERKEZİ YAYINLAR</div>
+                <div id="ann-list" class="modern-grid"></div>
             </div>
 
             <div id="proj-tab" class="tab-content" style="display: none;">
-                <div class="section-title">AKTİF OPERASYONLAR</div>
-                <div class="proj-grid">
-                    <div class="p-card"><h3>Roblox Bus Sim</h3><p>IETT temalı duraklar ve NPC boarding mantığı.</p></div>
-                    <div class="p-card"><h3>Realistic Football</h3><p>Power-bar fiziği ve özel animasyonlar.</p></div>
+                <div class="tab-header">MEVCUT PROJELER</div>
+                <div class="modern-grid">
+                    <div class="project-card">
+                        <div class="p-status">AKTİF</div>
+                        <h3>ROBLOX: BUS SIMULATOR</h3>
+                        <p>IETT Durak entegrasyonu ve NPC yapay zekası optimize ediliyor.</p>
+                        <div class="p-bar"><div class="p-fill" style="width: 85%;"></div></div>
+                    </div>
+                    <div class="project-card">
+                        <div class="p-status">BEKLEMEDE</div>
+                        <h3>REALISTIC FOOTBALL</h3>
+                        <p>Güç barı fiziği ve kaleci animasyonları test aşamasında.</p>
+                        <div class="p-bar"><div class="p-fill" style="width: 40%;"></div></div>
+                    </div>
                 </div>
             </div>
         </main>
