@@ -1,70 +1,107 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyBtzTIQm1vvsyYZRHV6t9RsTBK3Uma6K8rA",
-  authDomain: "imanpowerchat.firebaseapp.com",
-  databaseURL: "https://imanpowerchat-default-rtdb.firebaseio.com", 
-  projectId: "imanpowerchat",
-  storageBucket: "imanpowerchat.firebasestorage.app",
-  messagingSenderId: "809946654937",
-  appId: "1:809946654937:web:f34de2239ecdeb648036c8"
+    apiKey: "AIzaSyBtzTIQm1vvsyYZRHV6t9RsTBK3Uma6K8rA",
+    authDomain: "imanpowerchat.firebaseapp.com",
+    databaseURL: "https://imanpowerchat-default-rtdb.firebaseio.com", 
+    projectId: "imanpowerchat",
+    storageBucket: "imanpowerchat.firebasestorage.app",
+    messagingSenderId: "809946654937",
+    appId: "1:809946654937:web:f34de2239ecdeb648036c8"
 };
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-let operator = "";
+let myName = "";
 
 function checkLogin() {
     const u = document.getElementById('username').value.trim();
     const p = document.getElementById('password').value;
-    const staff = { "admin": "12345", "zeki": "aslan", "berat": "ipt2026" };
+    const auth = { "güney": "1zksz45", "reşit": "llpr2121", "berat": "iptz2026" };
 
-    if (staff[u.toLowerCase()] === p) {
-        operator = u.toUpperCase();
+    if (auth[u.toLowerCase()] === p) {
+        myName = u.toUpperCase();
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('main-panel').style.display = 'flex';
-        loadAnnouncements();
-        listenMessages();
-    } else {
-        alert("GEÇERSİZ YETKİ!");
-    }
+        document.getElementById('op-name').innerText = "OPERATÖR: " + myName;
+        
+        startSystem();
+    } else { alert("YETKİSİZ ERİŞİM DENEMESİ!"); }
 }
 
-function showTab(id) {
-    const tabs = document.getElementsByClassName('tab-content');
-    for (let t of tabs) t.style.display = 'none';
-    document.getElementById(id).style.display = (id === 'chat-tab') ? 'flex' : 'block';
+function startSystem() {
+    getOperationLocation();
+    updatePresence();
+    listenMessages();
+    loadAnnouncements();
 }
 
-function sendLiveMessage() {
-    const input = document.getElementById('chat-message');
-    if (input.value.trim() === "") return;
+// 1. GERÇEK KONUM SİSTEMİ
+function getOperationLocation() {
+    fetch('https://ipapi.co/json/')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('op-location').innerText = `📍 ${data.city} / ${data.country_name}`;
+        })
+        .catch(() => {
+            document.getElementById('op-location').innerText = "📍 KONUM: GİZLİ HAT";
+        });
+}
 
-    db.ref("messages").push().set({
-        sender: operator,
-        body: input.value,
-        clock: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+// 2. AKTİFLİK SİSTEMİ (Kimler içerde?)
+function updatePresence() {
+    const userRef = db.ref('presence/' + myName);
+    userRef.set(true);
+    userRef.onDisconnect().remove();
+
+    db.ref('presence').on('value', snap => {
+        const count = snap.numChildren();
+        document.getElementById('active-count').innerText = `${count} OPERATÖR ÇEVRİMİÇİ`;
     });
-    input.value = "";
+}
+
+// 3. SOHBET
+function sendLiveMessage() {
+    const inp = document.getElementById('chat-message');
+    if (inp.value.trim() === "") return;
+    db.ref("messages").push().set({
+        u: myName,
+        t: inp.value,
+        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+    });
+    inp.value = "";
 }
 
 function listenMessages() {
-    db.ref("messages").on("child_added", (snap) => {
-        const data = snap.val();
-        const screen = document.getElementById('chat-display');
-        screen.innerHTML += `
+    db.ref("messages").limitToLast(20).on("child_added", snap => {
+        const d = snap.val();
+        const display = document.getElementById('chat-display');
+        display.innerHTML += `
             <div class="msg-box">
-                <div class="m-info"><span class="m-user">${data.sender}</span> • ${data.clock}</div>
-                <div class="m-text">${data.body}</div>
+                <div style="font-size: 10px; color: #888; margin-bottom: 5px;">${d.u} • ${d.time}</div>
+                <div style="color: #fff;">${d.t}</div>
             </div>
         `;
-        screen.scrollTop = screen.scrollHeight;
+        display.scrollTop = display.scrollHeight;
     });
 }
 
+// 4. DUYURULAR
 function loadAnnouncements() {
-    const box = document.getElementById('ann-list');
+    const list = document.getElementById('ann-list');
     const news = [
-        { h: "SİSTEM V6 PRO", c: "Firebase Realtime Database entegrasyonu tamamlandı." },
-        { h: "DURUM RAPORU", c: "Roblox projeleri için kodlama süreci hızlandırıldı." }
+        { h: "GÜVENLİK PROTOKOLÜ", c: "Sistem V7 (Elite) sürümüne yükseltildi. Konum takibi aktif." },
+        { h: "MERKEZİ EMİR", c: "Tüm operasyonlar siber terminal üzerinden yönetilecektir." }
     ];
-    box.innerHTML = news.map(n => `<div style="border:1px solid #00ff41; padding:15px; margin-bottom:10px;"><h4>${n.h}</h4><p>${n.c}</p></div>`).join('');
+    list.innerHTML = news.map(n => `
+        <div class="project-card" style="border-left: 4px solid var(--primary);">
+            <h4 style="margin:0 0 10px 0;">${n.h}</h4>
+            <p style="font-size: 13px; color: #aaa;">${n.c}</p>
+        </div>
+    `).join('');
+}
+
+function showTab(id) {
+    document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).style.display = (id === 'chat-tab') ? 'flex' : 'block';
+    event.currentTarget.classList.add('active');
 }
