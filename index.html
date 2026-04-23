@@ -5,46 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IPT | Operasyon Merkezi</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="login-screen">
         <div class="login-box">
-            <h1 class="glitch">İMAN POWER TEŞKİLATI</h1>
-            <input type="text" id="username" placeholder="KOD ADI">
-            <input type="password" id="password" placeholder="ŞİFRE">
-            <button onclick="checkLogin()" class="btn-main">SİSTEME SIZ</button>
+            <div class="glitch-wrapper"><h1 class="glitch">İMAN POWER TEŞKİLATI</h1></div>
+            <div class="input-area">
+                <input type="text" id="username" placeholder="KOD ADI">
+                <input type="password" id="password" placeholder="ERİŞİM ŞİFRESİ">
+            </div>
+            <button onclick="checkLogin()" class="burn-btn">SİSTEME SIZ</button>
         </div>
     </div>
 
     <div id="main-panel" style="display: none;">
-        <nav class="cyber-nav">
-            <div class="nav-brand">IPT // CORE</div>
-            <div class="nav-buttons">
-                <button class="nav-btn" onclick="showTab('chat-tab')">📡 SOHBET</button>
-                <button class="nav-btn" onclick="showTab('announcements-tab')">📢 DUYURULAR</button>
-                <button class="nav-btn" onclick="showTab('projects-tab')">📁 PROJELER</button>
-                <button class="exit-btn" onclick="location.reload()">🔴 ÇIKIŞ</button>
+        <nav class="top-bar">
+            <div class="brand">IPT // ELITE_OPS</div>
+            <div class="nav-center">
+                <button class="n-btn" onclick="showTab('chat-tab')">📡 CANLI HAT</button>
+                <button class="n-btn" onclick="showTab('ann-tab')">📢 DUYURULAR</button>
+                <button class="n-btn" onclick="showTab('proj-tab')">📁 PROJELER</button>
+            </div>
+            <div class="user-info">
+                <span id="op-name">OPERATÖR: ---</span>
+                <button onclick="location.reload()" class="logout">ÇIKIŞ</button>
             </div>
         </nav>
 
         <div class="viewport">
             <div id="chat-tab" class="tab-content">
-                <div class="chat-frame">
+                <div class="chat-container">
                     <script id="chatbrojs" src="https://chatbro.com/embed.js?chat_id=9YmR"></script>
                 </div>
             </div>
 
-            <div id="announcements-tab" class="tab-content" style="display: none;">
-                <div id="announcement-list">
-                    </div>
+            <div id="ann-tab" class="tab-content" style="display: none;">
+                <div id="ann-list"></div>
             </div>
 
-            <div id="projects-tab" class="tab-content" style="display: none;">
-                <div class="project-grid">
-                    <div class="p-card"><h3>Roblox Bus Simulator</h3><p>Durak sistemleri ve NPC mantığı üzerine çalışılıyor.</p></div>
-                    <div class="p-card"><h3>Realistic Football</h3><p>Fizik tabanlı vuruş sistemi entegre ediliyor.</p></div>
+            <div id="proj-tab" class="tab-content" style="display: none;">
+                <div class="grid">
+                    <div class="card"><h3>Roblox Projesi</h3><p>Bus Simulator: Duraklar ve NPC sistemi.</p></div>
+                    <div class="card"><h3>Futbol Projesi</h3><p>Gerçekçi fizik ve vuruş barı.</p></div>
                 </div>
             </div>
         </div>
