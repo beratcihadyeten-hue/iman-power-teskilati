@@ -3,34 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPT | Operasyon Merkezi</title>
+    <title>IPT | Teşkilat Merkezi</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="login-screen">
         <div class="login-box">
+            <div class="scanner"></div>
             <h1 class="glitch">İMAN POWER TEŞKİLATI</h1>
-            <p>Erişim için yetki kodunuzu giriniz.</p>
-            <input type="text" id="username" placeholder="Kod Adı">
-            <input type="password" id="password" placeholder="Şifre">
+            <div class="input-group">
+                <input type="text" id="username" placeholder="KOD ADI">
+                <input type="password" id="password" placeholder="ERİŞİM ŞİFRESİ">
+            </div>
             <button onclick="checkLogin()">SİSTEME SIZ</button>
         </div>
     </div>
 
     <div id="main-panel" style="display: none;">
-        <header>
-            <span class="status">DURUM: ÇEVRİMİÇİ</span>
-            <span class="title">İMAN POWER TEŞKİLATI - ANA SUNUCU</span>
-            <button onclick="location.reload()" class="logout">ÇIKIŞ YAP</button>
-        </header>
-
-        <main>
-            <div class="chat-section">
-                <h3>GÜVENLİ HAT (CANLI SOHBET)</h3>
-                <script id="chatbrojs" src="https://chatbro.com/embed.js?chat_id=9YmR"></script>
+        <div class="sidebar">
+            <h2>TEŞKİLAT</h2>
+            <div class="menu-item active">🏠 ANA MERKEZ</div>
+            <div class="menu-item">📁 DOSYALAR</div>
+            <div class="menu-item">📡 SİNYAL TAKİBİ</div>
+            <hr>
+            <div class="admin-notice">
+                <h4>SON TALİMAT</h4>
+                <p id="daily-task">Hedef: Dijital Güvenlik. Kimseye şifre verme!</p>
             </div>
-        </main>
+        </div>
+
+        <div class="main-content">
+            <header>
+                <div class="status-bar">
+                    <span class="dot"></span> SİSTEM AKTİF - <span id="display-name"></span>
+                </div>
+                <button onclick="location.reload()" class="exit-btn">GÜVENLİ ÇIKIŞ</button>
+            </header>
+
+            <div class="dashboard">
+                <div class="chat-card">
+                    <h3>GÜVENLİ İLETİŞİM HATTI</h3>
+                    <div id="chat-container">
+                        <script id="chatbrojs" src="https://chatbro.com/embed.js?chat_id=9YmR"></script>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>OPERASYON DURUMU</h3>
+                    <div class="stat">AKTİF GÖREV: <span>SİTE KURULUMU</span></div>
+                    <div class="stat">GÜVENLİK: <span style="color: #0f0;">YÜKSEK</span></div>
+                    <div class="stat">ÜYELER: <span>Zekiler Ekibi</span></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
