@@ -1,40 +1,44 @@
-:root { --neon: #00ff41; --dark: #050505; --border: rgba(0, 255, 65, 0.2); --font-pro: 'JetBrains Mono', monospace; }
+:root { --neon: #00ff41; --danger: #ff003c; --bg: #050505; --card: rgba(255,255,255,0.03); }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-pro); -webkit-tap-highlight-color: transparent; }
-body { background: #000; color: var(--neon); height: 100vh; overflow: hidden; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'JetBrains Mono', monospace; }
+body { background: var(--bg); color: var(--neon); height: 100vh; overflow: hidden; display: flex; }
 
-/* Mobil Uyumluluk Ayarı */
+/* Mobil & PC Farkı */
 @media (max-width: 768px) {
     #main-panel { flex-direction: column !important; }
-    .sidebar { width: 100% !important; height: auto !important; border-right: none !important; border-bottom: 1px solid var(--border); }
-    .side-nav { flex-direction: row !important; overflow-x: auto; padding: 10px !important; gap: 5px; }
-    .n-btn { padding: 10px !important; font-size: 11px !important; white-space: nowrap; margin: 0 !important; }
-    .side-footer { display: none; }
+    .sidebar { width: 100% !important; height: auto !important; border-right: none !important; border-bottom: 1px solid var(--neon); }
+    .nav-links { flex-direction: row !important; overflow-x: auto; padding: 10px !important; }
+    .nav-btn { font-size: 10px !important; padding: 8px 12px !important; white-space: nowrap; }
+    .side-bottom { display: none; }
 }
 
-/* Sidebar & Butonlar */
-.sidebar { width: 280px; background: #080808; border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
-.side-header { padding: 25px; font-family: 'Orbitron'; font-weight: 900; font-size: 18px; text-align: center; border-bottom: 1px solid var(--border); }
-.n-btn { background: none; border: 1px solid transparent; color: #888; padding: 15px; text-align: left; cursor: pointer; margin: 5px 15px; border-radius: 4px; transition: 0.2s; }
-.n-btn.active { color: var(--neon); border-color: var(--neon); background: rgba(0,255,65,0.05); }
-.n-btn.special { border: 1px solid #ff003c; color: #ff003c; font-weight: bold; }
-.n-btn.special:hover { background: rgba(255,0,60,0.1); }
+/* Giriş Kartı - Ultra Modern */
+#login-screen { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; position: fixed; z-index: 999; }
+.login-card { background: rgba(10,10,10,0.9); border: 1px solid var(--neon); padding: 40px; width: 340px; text-align: center; box-shadow: 0 0 50px rgba(0,255,65,0.1); border-radius: 8px; }
+.glitch { font-family: 'Orbitron'; font-size: 2.2rem; color: #fff; position: relative; }
 
-/* Chat Sabitleme */
-.main-stage { flex: 1; display: flex; flex-direction: column; min-height: 0; position: relative; }
-.tab-content { display: flex; flex-direction: column; height: 100%; width: 100%; position: absolute; top: 0; left: 0; }
-#chat-display { flex: 1; overflow-y: auto; padding: 25px; display: flex; flex-direction: column; gap: 12px; background: #020202; }
-.chat-bar { padding: 20px; background: #080808; border-top: 1px solid var(--border); display: flex; gap: 10px; flex-shrink: 0; }
+/* inputlar */
+input { background: #000; border: 1px solid rgba(0,255,65,0.3); color: #fff; padding: 12px; margin-bottom: 15px; width: 100%; outline: none; border-radius: 4px; }
+input:focus { border-color: var(--neon); box-shadow: 0 0 10px var(--neon); }
+.login-btn { width: 100%; background: var(--neon); color: #000; padding: 15px; border: none; font-weight: 900; cursor: pointer; font-family: 'Orbitron'; }
 
-/* Kart Tasarımları (Bülten & Projeler) */
-.grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 25px; overflow-y: auto; }
-.pro-card { background: #0d0d0d; border: 1px solid var(--border); padding: 20px; border-radius: 4px; border-left: 4px solid var(--neon); }
-.secret-overlay { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 15px; }
+/* Ana Panel Layout */
+#main-panel { display: flex; width: 100vw; height: 100vh; }
+.sidebar { width: 280px; background: #080808; border-right: 1px solid rgba(0,255,65,0.2); display: flex; flex-direction: column; }
+.brand { padding: 25px; font-family: 'Orbitron'; font-size: 20px; font-weight: 900; text-align: center; background: var(--neon); color: #000; }
 
-/* Giriş Tasarımı */
-#login-screen { height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; position: relative; }
-.login-frame { background: rgba(5,5,5,0.9); border: 1px solid var(--neon); padding: 40px; text-align: center; z-index: 10; box-shadow: 0 0 40px rgba(0,255,65,0.1); width: 350px; }
-.main-title { font-family: 'Orbitron'; font-size: 1.8rem; color: #fff; margin-bottom: 5px; }
-.main-title span { color: var(--neon); }
-input { background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 2px; width: 100%; margin-bottom: 10px; outline: none; }
-.action-btn { width: 100%; background: var(--neon); color: #000; border: none; padding: 15px; font-weight: 900; cursor: pointer; font-family: 'Orbitron'; }
+.nav-links { display: flex; flex-direction: column; gap: 8px; padding: 20px; }
+.nav-btn { background: var(--card); border: 1px solid rgba(0,255,65,0.2); color: #888; padding: 15px; border-radius: 4px; cursor: pointer; text-align: left; }
+.nav-btn.active { color: var(--neon); border-color: var(--neon); background: rgba(0,255,65,0.05); }
+.nav-btn.secret { border-color: var(--danger); color: var(--danger); }
+
+/* Chat Alanı Fix */
+.content-area { flex: 1; position: relative; display: flex; flex-direction: column; background: #020202; }
+.tab-pane { height: 100%; display: flex; flex-direction: column; }
+#chat-display { flex: 1; overflow-y: auto; padding: 25px; display: flex; flex-direction: column; gap: 10px; }
+.chat-controls { padding: 20px; background: #080808; border-top: 1px solid rgba(0,255,65,0.1); display: flex; gap: 10px; }
+
+/* Modern Kartlar */
+.m-card { background: #0d0d0d; border: 1px solid rgba(0,255,65,0.2); padding: 20px; border-radius: 4px; position: relative; }
+.bar { height: 4px; background: #222; margin-top: 15px; border-radius: 2px; }
+.fill { height: 100%; background: var(--neon); box-shadow: 0 0 10px var(--neon); }
