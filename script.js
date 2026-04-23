@@ -2,16 +2,15 @@ function checkLogin() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value;
 
-    // Şifre Listesi
-    const members = { "admin": "12345", "zeki": "aslan", "berat": "ipt2026" };
+    const auth = { "admin": "12345", "zeki": "aslan", "berat": "ipt2026" };
 
-    if (members[user.toLowerCase()] === pass) {
+    if (auth[user.toLowerCase()] === pass) {
         document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('main-panel').style.display = 'block';
-        document.getElementById('op-name').innerText = "OPERATÖR: " + user.toUpperCase();
+        document.getElementById('main-panel').style.display = 'flex';
+        document.getElementById('op-id').innerText = "OPERATÖR: " + user.toUpperCase();
         loadAnnouncements();
     } else {
-        alert("YETKİSİZ ERİŞİM! Sinyal Kesildi.");
+        alert("Erişim Reddedildi! Geçersiz Teşkilat Kodu.");
     }
 }
 
@@ -21,15 +20,15 @@ function showTab(id) {
     document.getElementById(id).style.display = 'block';
 }
 
-const duyurular = [
-    { baslik: "SİSTEM GÜNCELLENDİ (V3)", icerik: "Chat yazma sorunu çözüldü, yeni butonlar eklendi." },
-    { baslik: "OPERASYON EMRİ", icerik: "Zekiler ekibi GitHub üzerinde toplanıyor." }
+const notifications = [
+    { t: "GÜVENLİK PROTOKOLÜ", c: "Site GitHub üzerinden şifrelendi. Chat artık aktif." },
+    { t: "ZEKİLER GRUBU", c: "Yeni logo ve operasyon planı 'Dosyalar' sekmesine eklenecek." }
 ];
 
 function loadAnnouncements() {
-    const box = document.getElementById('ann-list');
-    box.innerHTML = "";
-    duyurular.forEach(d => {
-        box.innerHTML += `<div class="ann-item"><h3>${d.baslik}</h3><p>${d.icerik}</p></div>`;
+    const list = document.getElementById('ann-list');
+    list.innerHTML = "";
+    notifications.forEach(n => {
+        list.innerHTML += `<div class="ann-card"><h4>${n.t}</h4><p>${n.c}</p></div>`;
     });
 }
