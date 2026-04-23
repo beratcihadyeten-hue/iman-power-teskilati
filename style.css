@@ -1,6 +1,86 @@
-body { background: #000; color: #0f0; font-family: monospace; margin: 0; overflow: hidden; }
-.login-box { border: 1px solid #0f0; padding: 50px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; background: rgba(0, 20, 0, 0.9); }
-input { display: block; margin: 15px auto; padding: 10px; background: #000; border: 1px solid #0f0; color: #0f0; width: 200px; }
-button { background: #0f0; color: #000; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
-header { background: #050505; padding: 15px; border-bottom: 1px solid #0f0; display: flex; justify-content: space-between; }
-.chat-section { padding: 20px; height: 80vh; }
+* { box-sizing: border-box; }
+body {
+    background-color: #050505;
+    color: #00ff41;
+    font-family: 'Orbitron', sans-serif;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Giriş Ekranı */
+#login-screen {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #0a1f0a 0%, #000 100%);
+}
+
+.login-box {
+    border: 2px solid #00ff41;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.95);
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+    text-align: center;
+    position: relative;
+}
+
+.scanner {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 2px;
+    background: #00ff41;
+    animation: scan 3s infinite linear;
+}
+
+@keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
+input {
+    display: block; width: 100%; margin: 15px 0;
+    background: #111; border: 1px solid #00ff41;
+    padding: 12px; color: #00ff41; outline: none;
+}
+
+button {
+    width: 100%; padding: 12px; background: #00ff41;
+    color: #000; font-weight: bold; border: none;
+    cursor: pointer; transition: 0.3s;
+}
+
+button:hover { background: #fff; box-shadow: 0 0 15px #00ff41; }
+
+/* Ana Panel */
+#main-panel { display: flex; height: 100vh; }
+
+.sidebar {
+    width: 250px; background: #0a0a0a;
+    border-right: 1px solid #333; padding: 20px;
+}
+
+.main-content { flex: 1; display: flex; flex-direction: column; }
+
+header {
+    height: 60px; border-bottom: 1px solid #333;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px; padding: 20px; height: calc(100vh - 60px);
+}
+
+.chat-card, .info-card {
+    background: #0f0f0f; border: 1px solid #333;
+    padding: 15px; border-radius: 5px;
+}
+
+.dot {
+    height: 10px; width: 10px; background: #0f0;
+    border-radius: 50%; display: inline-block; margin-right: 5px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+.stat { margin: 10px 0; font-size: 14px; }
