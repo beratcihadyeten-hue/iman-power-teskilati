@@ -3,84 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPT | Elite Terminal V7</title>
+    <title>IPT | PRO TERMINAL V8</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300;500;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="login-screen">
-        <div class="glass-card">
-            <h1 class="scanline-text">İMANPOWER</h1>
-            <div class="auth-box">
-                <div class="input-wrap">
-                    <input type="text" id="username" placeholder="OPERATÖR KODU" autocomplete="off">
-                </div>
-                <div class="input-wrap">
-                    <input type="password" id="password" placeholder="GÜVENLİK ANAHTARI">
-                </div>
+        <div class="hacker-bg"></div>
+        <div class="glass-login">
+            <h1 class="neon-text">İMANPOWER</h1>
+            <div class="status-line">SİSTEM DURUMU: BEKLEMEDE</div>
+            <div class="auth-inputs">
+                <input type="text" id="username" placeholder="OPERATÖR KİMLİĞİ" autocomplete="off">
+                <input type="password" id="password" placeholder="ERİŞİM ŞİFRESİ">
             </div>
-            <button onclick="checkLogin()" class="glow-btn">ERİŞİMİ ONAYLA</button>
+            <button onclick="checkLogin()" class="pro-btn">SİSTEME GİRİŞ YAP</button>
         </div>
     </div>
 
     <div id="main-panel" style="display: none;">
         <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">IPT</div>
-                <div class="status-indicator">
+            <div class="sidebar-top">
+                <div class="logo-box">IPT // PRO</div>
+                <div class="live-indicator">
                     <span class="dot pulse"></span>
-                    <span id="active-count">Yükleniyor...</span>
+                    <span id="active-count">0 OPERATÖR AKTİF</span>
                 </div>
             </div>
             
-            <nav class="nav-menu">
-                <button onclick="showTab('chat-tab')" class="nav-btn active">📡 SİNYAL HATTI</button>
-                <button onclick="showTab('ann-tab')" class="nav-btn">📢 BÜLTEN</button>
-                <button onclick="showTab('proj-tab')" class="nav-btn">📂 OPERASYONLAR</button>
+            <nav class="side-nav">
+                <button onclick="showTab('chat-tab')" class="nav-item active" id="btn-chat">📡 SİNYAL HATTI</button>
+                <button onclick="showTab('ann-tab')" class="nav-item" id="btn-ann">📢 BÜLTEN</button>
+                <button onclick="showTab('proj-tab')" class="nav-item" id="btn-proj">📁 OPERASYONLAR</button>
             </nav>
 
-            <div class="user-info-card">
-                <div id="op-name">---</div>
-                <div id="op-location">📍 Konum Belirleniyor...</div>
+            <div class="sidebar-bottom">
+                <div class="user-profile">
+                    <div id="op-name">OPERATÖR: ---</div>
+                    <div id="op-location">📍 KONUM: BELİRLENİYOR</div>
+                </div>
+                <button onclick="location.reload()" class="btn-kill">BAĞLANTIYI KES</button>
             </div>
-            
-            <button onclick="location.reload()" class="exit-link">🔴 BAĞLANTIYI KES</button>
         </aside>
 
-        <main class="terminal-area">
+        <section class="content-frame">
             <div id="chat-tab" class="tab-content">
-                <div class="tab-header">ŞİFRELİ MESAJLAŞMA ÜNİTESİ</div>
+                <div class="frame-header">KRİPTOLU İLETİŞİM KANALI</div>
                 <div id="chat-display"></div>
-                <div class="input-bar">
-                    <input type="text" id="chat-message" placeholder="Komut ilet..." onkeypress="if(event.key==='Enter') sendLiveMessage()">
-                    <button onclick="sendLiveMessage()">AKTARIYI BAŞLAT</button>
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chat-message" placeholder="Mesajını ilet..." onkeypress="if(event.key==='Enter') sendLiveMessage()">
+                    <button onclick="sendLiveMessage()">GÖNDER</button>
                 </div>
             </div>
 
             <div id="ann-tab" class="tab-content" style="display: none;">
-                <div class="tab-header">MERKEZİ YAYINLAR</div>
-                <div id="ann-list" class="modern-grid"></div>
+                <div class="frame-header">MERKEZİ YAYINLAR</div>
+                <div id="ann-list" class="pro-grid"></div>
             </div>
 
             <div id="proj-tab" class="tab-content" style="display: none;">
-                <div class="tab-header">MEVCUT PROJELER</div>
-                <div class="modern-grid">
-                    <div class="project-card">
-                        <div class="p-status">AKTİF</div>
-                        <h3>ROBLOX: BUS SIMULATOR</h3>
-                        <p>IETT Durak entegrasyonu ve NPC yapay zekası optimize ediliyor.</p>
-                        <div class="p-bar"><div class="p-fill" style="width: 85%;"></div></div>
+                <div class="frame-header">AKTİF PROJELER</div>
+                <div class="pro-grid">
+                    <div class="pro-card">
+                        <div class="card-tag">DEVAM EDİYOR</div>
+                        <h3>ROBLOX BUS SIMULATOR</h3>
+                        <p>IETT durakları ve yolcu ödeme sistemleri optimize ediliyor.</p>
+                        <div class="progress-container"><div class="progress-bar" style="width: 85%;"></div></div>
                     </div>
-                    <div class="project-card">
-                        <div class="p-status">BEKLEMEDE</div>
-                        <h3>REALISTIC FOOTBALL</h3>
-                        <p>Güç barı fiziği ve kaleci animasyonları test aşamasında.</p>
-                        <div class="p-bar"><div class="p-fill" style="width: 40%;"></div></div>
+                    <div class="pro-card">
+                        <div class="card-tag wa">TEST AŞAMASI</div>
+                        <h3>FOOTBALL REAL PHYSICS</h3>
+                        <p>Güç barı mekanikleri ve kaleci yapay zekası güncelleniyor.</p>
+                        <div class="progress-container"><div class="progress-bar" style="width: 45%;"></div></div>
                     </div>
                 </div>
             </div>
-        </main>
+        </section>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
