@@ -3,73 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İmanPowerTeşkilat | V10 PRO</title>
+    <title>İmanPowerTeşkilat | V11 ELITE</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300;500;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="loading">
 
     <div id="login-screen">
-        <div class="cyber-overlay"></div>
-        <div class="login-frame">
-            <h1 class="main-title">İMANPOWER<span>TEŞKİLAT</span></h1>
-            <p class="system-status">SİSTEM DURUMU: ERİŞİM BEKLENİYOR...</p>
-            <div class="auth-inputs">
-                <input type="text" id="username" placeholder="OPERATÖR ADI" autocomplete="off">
-                <input type="password" id="password" placeholder="GÜVENLİK KODU">
+        <div class="matrix-bg"></div>
+        <div class="login-card">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="İMANPOWER">İMANPOWER</h1>
             </div>
-            <button onclick="checkLogin()" class="action-btn">SİSTEME SIZ</button>
+            <p class="tagline">TEŞKİLAT KOMUTA MERKEZİ</p>
+            <div class="input-group">
+                <input type="text" id="username" placeholder="OPERATÖR ADI" autocomplete="off">
+                <input type="password" id="password" placeholder="ERİŞİM ŞİFRESİ">
+            </div>
+            <button onclick="checkLogin()" class="login-btn">SİSTEME SIZ</button>
         </div>
     </div>
 
     <div id="main-panel" style="display: none;">
         <aside class="sidebar">
-            <div class="side-header">IPT // V10</div>
-            <div class="active-status"><span class="dot pulse"></span> <span id="active-count">0 AKTİF</span></div>
+            <div class="side-top">
+                <div class="brand">IPT // V11</div>
+                <div class="live-info">
+                    <span id="active-count">YÜKLENİYOR...</span>
+                    <div class="pulse-dot"></div>
+                </div>
+            </div>
             
-            <nav class="side-nav">
-                <button onclick="showTab('chat-tab')" class="n-btn active" id="btn-chat">📡 SİNYAL HATTI</button>
-                <button onclick="showTab('ann-tab')" class="n-btn" id="btn-ann">📢 BÜLTEN</button>
-                <button onclick="showTab('proj-tab')" class="n-btn" id="btn-proj">📂 OPERASYONLAR</button>
-                <button onclick="showTab('top-secret-tab')" class="n-btn special" id="btn-top">⚡ ÜST MEVKİ</button>
+            <nav class="nav-links">
+                <button onclick="showTab('chat-tab')" class="nav-btn active" id="btn-chat">📡 SİNYAL</button>
+                <button onclick="showTab('ann-tab')" class="nav-btn" id="btn-ann">📢 BÜLTEN</button>
+                <button onclick="showTab('proj-tab')" class="nav-btn" id="btn-proj">📂 PROJELER</button>
+                <button onclick="showTab('top-secret-tab')" class="nav-btn secret" id="btn-top">⚡ ÜST MEVKİ</button>
             </nav>
 
-            <div class="side-footer">
-                <div id="op-name">---</div>
-                <div id="op-location">📍 KONUM BEKLENİYOR</div>
-                <button onclick="location.reload()" class="kill-btn">BAĞLANTIYI KES</button>
+            <div class="side-bottom">
+                <div class="op-stat">
+                    <span id="op-name">---</span>
+                    <span id="op-location">📍 KONUM: BEKLENİYOR</span>
+                </div>
+                <button onclick="location.reload()" class="logout-btn">BAĞLANTIYI KES</button>
             </div>
         </aside>
 
-        <main class="main-stage">
-            <div id="chat-tab" class="tab-content">
-                <div class="stage-header">STRATEJİK İLETİŞİM KANALI</div>
+        <main class="content-area">
+            <div id="chat-tab" class="tab-pane">
+                <div class="pane-header">KRİPTOLU MESAJLAŞMA</div>
                 <div id="chat-display"></div>
-                <div class="chat-bar">
-                    <input type="text" id="chat-message" placeholder="Komut ilet..." onkeypress="if(event.key==='Enter') sendLiveMessage()">
-                    <button onclick="sendLiveMessage()">GÖNDER</button>
+                <div class="chat-controls">
+                    <input type="text" id="chat-message" placeholder="Mesaj yaz..." onkeypress="if(event.key==='Enter') sendLiveMessage()">
+                    <button onclick="sendLiveMessage()">İLET</button>
                 </div>
             </div>
 
-            <div id="ann-tab" class="tab-content" style="display: none;">
-                <div class="stage-header">MERKEZİ DUYURULAR</div>
-                <div id="ann-list" class="grid-layout"></div>
+            <div id="ann-tab" class="tab-pane" style="display: none;">
+                <div class="pane-header">MERKEZİ DUYURULAR</div>
+                <div id="ann-list" class="modern-grid"></div>
             </div>
 
-            <div id="proj-tab" class="tab-content" style="display: none;">
-                <div class="stage-header">AKTİF OPERASYONLAR</div>
-                <div class="grid-layout" id="project-list"></div>
-            </div>
-
-            <div id="top-secret-tab" class="tab-content" style="display: none;">
-                <div class="stage-header">ÜST MEVKİ VERİ TABANI</div>
-                <div id="secret-auth" class="secret-overlay">
-                    <h3>YETKİ KONTROLÜ</h3>
-                    <input type="password" id="secret-key" placeholder="ÜST MEVKİ ŞİFRESİ">
-                    <button onclick="unlockSecret()" class="pro-btn">YETKİ AL</button>
-                </div>
-                <div id="secret-content" style="display: none;" class="grid-layout">
+            <div id="proj-tab" class="tab-pane" style="display: none;">
+                <div class="pane-header">AKTİF OPERASYONLAR</div>
+                <div class="modern-grid">
+                    <div class="m-card">
+                        <div class="badge">AKTİF</div>
+                        <h3>BUS SIMULATOR</h3>
+                        <p>IETT Durak ve NPC sistemleri güncelleniyor.</p>
+                        <div class="bar"><div class="fill" style="width: 85%;"></div></div>
                     </div>
+                    <div class="m-card">
+                        <div class="badge yellow">TEST</div>
+                        <h3>REAL FOOTBALL</h3>
+                        <p>Fizik tabanlı kaleci ve vuruş mekaniği.</p>
+                        <div class="bar"><div class="fill" style="width: 50%;"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="top-secret-tab" class="tab-pane" style="display: none;">
+                <div class="pane-header">ÜST MEVKİ İSTİHBARAT</div>
+                <div id="secret-lock" class="lock-screen">
+                    <div class="lock-icon">🔒</div>
+                    <input type="password" id="secret-key" placeholder="YETKİ ANAHTARI">
+                    <button onclick="unlockSecret()" class="unlock-btn">KİLİDİ AÇ</button>
+                </div>
+                <div id="secret-data" style="display: none;" class="modern-grid"></div>
             </div>
         </main>
     </div>
