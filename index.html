@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPT | Operasyon Merkezi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <h1 class="glitch">İMAN POWER TEŞKİLATI</h1>
+            <p>Erişim için yetki kodunuzu giriniz.</p>
+            <input type="text" id="username" placeholder="Kod Adı">
+            <input type="password" id="password" placeholder="Şifre">
+            <button onclick="checkLogin()">SİSTEME SIZ</button>
+        </div>
+    </div>
+
+    <div id="main-panel" style="display: none;">
+        <header>
+            <span class="status">DURUM: ÇEVRİMİÇİ</span>
+            <span class="title">İMAN POWER TEŞKİLATI - ANA SUNUCU</span>
+            <button onclick="location.reload()" class="logout">ÇIKIŞ YAP</button>
+        </header>
+
+        <main>
+            <div class="chat-section">
+                <h3>GÜVENLİ HAT (CANLI SOHBET)</h3>
+                <script id="chatbrojs" src="https://chatbro.com/embed.js?chat_id=9YmR"></script>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
