@@ -3,58 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPT | Teşkilat Merkezi</title>
+    <title>IPT | Operasyon Merkezi</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="login-screen">
         <div class="login-box">
-            <div class="scanner"></div>
             <h1 class="glitch">İMAN POWER TEŞKİLATI</h1>
-            <div class="input-group">
-                <input type="text" id="username" placeholder="KOD ADI">
-                <input type="password" id="password" placeholder="ERİŞİM ŞİFRESİ">
-            </div>
-            <button onclick="checkLogin()">SİSTEME SIZ</button>
+            <input type="text" id="username" placeholder="KOD ADI">
+            <input type="password" id="password" placeholder="ŞİFRE">
+            <button onclick="checkLogin()">SİSTEME GİR</button>
         </div>
     </div>
 
     <div id="main-panel" style="display: none;">
-        <div class="sidebar">
-            <h2>TEŞKİLAT</h2>
-            <div class="menu-item active">🏠 ANA MERKEZ</div>
-            <div class="menu-item">📁 DOSYALAR</div>
-            <div class="menu-item">📡 SİNYAL TAKİBİ</div>
-            <hr>
-            <div class="admin-notice">
-                <h4>SON TALİMAT</h4>
-                <p id="daily-task">Hedef: Dijital Güvenlik. Kimseye şifre verme!</p>
+        <nav class="top-nav">
+            <div class="nav-logo">IPT // v2.0</div>
+            <div class="nav-links">
+                <button onclick="showTab('chat-tab')">📡 SOHBET HATTI</button>
+                <button onclick="showTab('projects-tab')">📂 PROJELER</button>
+                <button onclick="showTab('members-tab')">👥 ÜYELER</button>
+                <button onclick="location.reload()" class="exit-btn">🔴 ÇIKIŞ</button>
             </div>
-        </div>
+        </nav>
 
-        <div class="main-content">
-            <header>
-                <div class="status-bar">
-                    <span class="dot"></span> SİSTEM AKTİF - <span id="display-name"></span>
+        <div class="content-area">
+            <div id="chat-tab" class="tab-content">
+                <div class="chat-wrapper">
+                    <script id="chatbrojs" src="https://chatbro.com/embed.js?chat_id=9YmR"></script>
                 </div>
-                <button onclick="location.reload()" class="exit-btn">GÜVENLİ ÇIKIŞ</button>
-            </header>
+            </div>
 
-            <div class="dashboard">
-                <div class="chat-card">
-                    <h3>GÜVENLİ İLETİŞİM HATTI</h3>
-                    <div id="chat-container">
-                        <script id="chatbrojs" src="https://chatbro.com/embed.js?chat_id=9YmR"></script>
+            <div id="projects-tab" class="tab-content" style="display: none;">
+                <div class="card-grid">
+                    <div class="project-card">
+                        <h3>Roblox Bus Simulator</h3>
+                        <p>IETT Temalı otobüs projesi aktif.</p>
+                        <div class="progress-bar"><div style="width: 70%"></div></div>
+                    </div>
+                    <div class="project-card">
+                        <h3>Football Game</h3>
+                        <p>Gerçekçi fizik ve animasyon çalışmaları.</p>
+                        <div class="progress-bar"><div style="width: 40%"></div></div>
                     </div>
                 </div>
+            </div>
 
-                <div class="info-card">
-                    <h3>OPERASYON DURUMU</h3>
-                    <div class="stat">AKTİF GÖREV: <span>SİTE KURULUMU</span></div>
-                    <div class="stat">GÜVENLİK: <span style="color: #0f0;">YÜKSEK</span></div>
-                    <div class="stat">ÜYELER: <span>Zekiler Ekibi</span></div>
+            <div id="members-tab" class="tab-content" style="display: none;">
+                <div class="member-list">
+                    <div class="member-item">🟢 Admin (Kurucu)</div>
+                    <div class="member-item">🟢 Zeki (Operatör)</div>
+                    <div class="member-item">⚪ Misafir</div>
                 </div>
             </div>
         </div>
