@@ -3,40 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPT | Operasyon Merkezi</title>
+    <title>IPT | Elite Terminal</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="login-screen">
-        <div class="login-box">
-            <div class="glitch-wrapper"><h1 class="glitch">İMAN POWER TEŞKİLATI</h1></div>
-            <div class="input-area">
-                <input type="text" id="username" placeholder="KOD ADI">
-                <input type="password" id="password" placeholder="ERİŞİM ŞİFRESİ">
+        <div class="login-card">
+            <h1 class="glitch" data-text="İMANPOWER">İMANPOWER</h1>
+            <p class="subtitle">TEŞKİLAT ERİŞİM NOKTASI</p>
+            <div class="input-box">
+                <input type="text" id="username" placeholder="OPERATÖR KODU">
+                <input type="password" id="password" placeholder="GÜVENLİK ANAHTARI">
             </div>
-            <button onclick="checkLogin()" class="burn-btn">SİSTEME SIZ</button>
+            <button onclick="checkLogin()" class="login-btn">BAĞLAN</button>
         </div>
     </div>
 
     <div id="main-panel" style="display: none;">
-        <nav class="top-bar">
-            <div class="brand">IPT // ELITE_OPS</div>
-            <div class="nav-center">
-                <button class="n-btn" onclick="showTab('chat-tab')">📡 CANLI HAT</button>
-                <button class="n-btn" onclick="showTab('ann-tab')">📢 DUYURULAR</button>
-                <button class="n-btn" onclick="showTab('proj-tab')">📁 PROJELER</button>
-            </div>
-            <div class="user-info">
-                <span id="op-name">OPERATÖR: ---</span>
-                <button onclick="location.reload()" class="logout">ÇIKIŞ</button>
-            </div>
+        <nav class="side-nav">
+            <div class="logo">IPT</div>
+            <button onclick="showTab('chat-tab')" class="nav-item">📡 CANLI HAT</button>
+            <button onclick="showTab('ann-tab')" class="nav-item">📢 DUYURULAR</button>
+            <button onclick="showTab('proj-tab')" class="nav-item">📂 DOSYALAR</button>
+            <button onclick="showTab('stats-tab')" class="nav-item">📊 ANALİZ</button>
+            <button onclick="location.reload()" class="exit-item">❌ ÇIKIŞ</button>
         </nav>
 
-        <div class="viewport">
+        <main class="content">
+            <header>
+                <div class="system-status"><span class="pulse"></span> SİSTEM: ÇEVRİMİÇİ | <span id="op-id">---</span></div>
+            </header>
+
             <div id="chat-tab" class="tab-content">
-                <div class="chat-container">
+                <div class="chat-header">ŞİFRELİ MESAJLAŞMA BİRİMİ</div>
+                <div class="chat-frame">
                     <script id="chatbrojs" src="https://chatbro.com/embed.js?chat_id=9YmR"></script>
                 </div>
             </div>
@@ -47,11 +49,19 @@
 
             <div id="proj-tab" class="tab-content" style="display: none;">
                 <div class="grid">
-                    <div class="card"><h3>Roblox Projesi</h3><p>Bus Simulator: Duraklar ve NPC sistemi.</p></div>
-                    <div class="card"><h3>Futbol Projesi</h3><p>Gerçekçi fizik ve vuruş barı.</p></div>
+                    <div class="p-card"><h3>ROBLOX: BUS SIM</h3><p>Durak Partları ve NPC kodlaması %80 tamamlandı.</p></div>
+                    <div class="p-card"><h3>ROBLOX: FOOTBALL</h3><p>Power-bar ve kaleci yapay zekası optimize ediliyor.</p></div>
                 </div>
             </div>
-        </div>
+
+            <div id="stats-tab" class="tab-content" style="display: none;">
+                <div class="stats-container">
+                    <div class="stat-box"><h4>ÜYE SAYISI</h4><p>4 Aktif</p></div>
+                    <div class="stat-box"><h4>GÜVENLİK SEVİYESİ</h4><p style="color: gold;">KRİTİK</p></div>
+                    <div class="stat-box"><h4>SUNUCU KONUMU</h4><p>Antakya / TR</p></div>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script src="script.js"></script>
