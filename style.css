@@ -1,43 +1,24 @@
-body {
-    background: #050505; color: #00ff41; margin: 0;
-    font-family: 'Rajdhani', sans-serif; overflow: hidden;
-}
+* { box-sizing: border-box; transition: 0.3s; }
+body { background: #000; color: #00ff41; margin: 0; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
 
 /* Giriş */
-#login-screen {
-    height: 100vh; display: flex; justify-content: center; align-items: center;
-    background: radial-gradient(circle, #0a1f0a 0%, #000 100%);
-}
-.login-box {
-    border: 2px solid #00ff41; padding: 40px; background: rgba(0,0,0,0.9);
-    text-align: center; box-shadow: 0 0 20px #00ff41;
-}
+#login-screen { height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; }
+.login-box { border: 2px solid #00ff41; padding: 50px; background: #050505; box-shadow: 0 0 30px rgba(0,255,65,0.2); text-align: center; }
+input { display: block; width: 100%; margin: 15px 0; padding: 12px; background: #000; border: 1px solid #00ff41; color: #00ff41; font-family: 'Orbitron'; }
 
-/* Üst Menü */
-.top-nav {
-    display: flex; justify-content: space-between; align-items: center;
-    background: #000; border-bottom: 2px solid #00ff41; padding: 10px 20px;
-}
-.nav-links button {
-    background: transparent; border: 1px solid #00ff41; color: #00ff41;
-    padding: 8px 15px; cursor: pointer; margin-left: 10px; font-family: 'Orbitron';
-}
-.nav-links button:hover { background: #00ff41; color: #000; }
+/* Navigasyon */
+.cyber-nav { display: flex; justify-content: space-between; padding: 15px 30px; background: #080808; border-bottom: 2px solid #00ff41; }
+.nav-brand { font-family: 'Orbitron'; font-weight: 900; font-size: 20px; letter-spacing: 2px; }
+.nav-btn { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 8px 20px; cursor: pointer; margin-left: 10px; font-family: 'Orbitron'; font-size: 12px; }
+.nav-btn:hover { background: #00ff41; color: #000; box-shadow: 0 0 15px #00ff41; }
 
-/* İçerik Alanı */
-.content-area { padding: 20px; height: calc(100vh - 70px); overflow-y: auto; }
-.tab-content { animation: fadeIn 0.5s; }
+/* Chat Alanı - Yazma butonu görünmüyorsa bu alan düzeltir */
+.viewport { height: calc(100vh - 70px); padding: 20px; overflow-y: auto; }
+.chat-frame { height: 85vh; width: 100%; border: 1px solid #111; border-radius: 8px; overflow: hidden; background: #050505; }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* Duyurular */
+.ann-card { background: rgba(0, 255, 65, 0.05); border: 1px solid #00ff41; padding: 20px; margin-bottom: 15px; border-radius: 4px; }
+.ann-card h4 { margin: 0 0 10px 0; color: #fff; font-family: 'Orbitron'; }
 
-/* Kartlar */
-.project-card {
-    background: #111; border-left: 4px solid #00ff41; padding: 15px; margin-bottom: 15px;
-}
-.progress-bar { background: #333; height: 10px; margin-top: 10px; }
-.progress-bar div { background: #00ff41; height: 100%; }
-
-.member-item { padding: 10px; border-bottom: 1px solid #222; }
-
-/* Chatbro genişlik ayarı */
-.chat-wrapper { height: 80vh; border: 1px solid #333; }
+/* Projeler */
+.p-card { background: #111; padding: 20px; border-left: 5px solid #00ff41; margin-bottom: 10px; }
