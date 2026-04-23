@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IPT | Operasyon Merkezi</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -14,48 +14,37 @@
             <h1 class="glitch">İMAN POWER TEŞKİLATI</h1>
             <input type="text" id="username" placeholder="KOD ADI">
             <input type="password" id="password" placeholder="ŞİFRE">
-            <button onclick="checkLogin()">SİSTEME GİR</button>
+            <button onclick="checkLogin()" class="btn-main">SİSTEME SIZ</button>
         </div>
     </div>
 
     <div id="main-panel" style="display: none;">
-        <nav class="top-nav">
-            <div class="nav-logo">IPT // v2.0</div>
-            <div class="nav-links">
-                <button onclick="showTab('chat-tab')">📡 SOHBET HATTI</button>
-                <button onclick="showTab('projects-tab')">📂 PROJELER</button>
-                <button onclick="showTab('members-tab')">👥 ÜYELER</button>
-                <button onclick="location.reload()" class="exit-btn">🔴 ÇIKIŞ</button>
+        <nav class="cyber-nav">
+            <div class="nav-brand">IPT // CORE</div>
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="showTab('chat-tab')">📡 SOHBET</button>
+                <button class="nav-btn" onclick="showTab('announcements-tab')">📢 DUYURULAR</button>
+                <button class="nav-btn" onclick="showTab('projects-tab')">📁 PROJELER</button>
+                <button class="exit-btn" onclick="location.reload()">🔴 ÇIKIŞ</button>
             </div>
         </nav>
 
-        <div class="content-area">
+        <div class="viewport">
             <div id="chat-tab" class="tab-content">
-                <div class="chat-wrapper">
+                <div class="chat-frame">
                     <script id="chatbrojs" src="https://chatbro.com/embed.js?chat_id=9YmR"></script>
                 </div>
             </div>
 
-            <div id="projects-tab" class="tab-content" style="display: none;">
-                <div class="card-grid">
-                    <div class="project-card">
-                        <h3>Roblox Bus Simulator</h3>
-                        <p>IETT Temalı otobüs projesi aktif.</p>
-                        <div class="progress-bar"><div style="width: 70%"></div></div>
+            <div id="announcements-tab" class="tab-content" style="display: none;">
+                <div id="announcement-list">
                     </div>
-                    <div class="project-card">
-                        <h3>Football Game</h3>
-                        <p>Gerçekçi fizik ve animasyon çalışmaları.</p>
-                        <div class="progress-bar"><div style="width: 40%"></div></div>
-                    </div>
-                </div>
             </div>
 
-            <div id="members-tab" class="tab-content" style="display: none;">
-                <div class="member-list">
-                    <div class="member-item">🟢 Admin (Kurucu)</div>
-                    <div class="member-item">🟢 Zeki (Operatör)</div>
-                    <div class="member-item">⚪ Misafir</div>
+            <div id="projects-tab" class="tab-content" style="display: none;">
+                <div class="project-grid">
+                    <div class="p-card"><h3>Roblox Bus Simulator</h3><p>Durak sistemleri ve NPC mantığı üzerine çalışılıyor.</p></div>
+                    <div class="p-card"><h3>Realistic Football</h3><p>Fizik tabanlı vuruş sistemi entegre ediliyor.</p></div>
                 </div>
             </div>
         </div>
