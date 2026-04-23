@@ -2,84 +2,76 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPT | PRO TERMINAL V8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>İmanPowerTeşkilat | V10 PRO</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300;500;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="login-screen">
-        <div class="hacker-bg"></div>
-        <div class="glass-login">
-            <h1 class="neon-text">İMANPOWER</h1>
-            <div class="status-line">SİSTEM DURUMU: BEKLEMEDE</div>
+        <div class="cyber-overlay"></div>
+        <div class="login-frame">
+            <h1 class="main-title">İMANPOWER<span>TEŞKİLAT</span></h1>
+            <p class="system-status">SİSTEM DURUMU: ERİŞİM BEKLENİYOR...</p>
             <div class="auth-inputs">
-                <input type="text" id="username" placeholder="OPERATÖR KİMLİĞİ" autocomplete="off">
-                <input type="password" id="password" placeholder="ERİŞİM ŞİFRESİ">
+                <input type="text" id="username" placeholder="OPERATÖR ADI" autocomplete="off">
+                <input type="password" id="password" placeholder="GÜVENLİK KODU">
             </div>
-            <button onclick="checkLogin()" class="pro-btn">SİSTEME GİRİŞ YAP</button>
+            <button onclick="checkLogin()" class="action-btn">SİSTEME SIZ</button>
         </div>
     </div>
 
     <div id="main-panel" style="display: none;">
         <aside class="sidebar">
-            <div class="sidebar-top">
-                <div class="logo-box">IPT // PRO</div>
-                <div class="live-indicator">
-                    <span class="dot pulse"></span>
-                    <span id="active-count">0 OPERATÖR AKTİF</span>
-                </div>
-            </div>
+            <div class="side-header">IPT // V10</div>
+            <div class="active-status"><span class="dot pulse"></span> <span id="active-count">0 AKTİF</span></div>
             
             <nav class="side-nav">
-                <button onclick="showTab('chat-tab')" class="nav-item active" id="btn-chat">📡 SİNYAL HATTI</button>
-                <button onclick="showTab('ann-tab')" class="nav-item" id="btn-ann">📢 BÜLTEN</button>
-                <button onclick="showTab('proj-tab')" class="nav-item" id="btn-proj">📁 OPERASYONLAR</button>
+                <button onclick="showTab('chat-tab')" class="n-btn active" id="btn-chat">📡 SİNYAL HATTI</button>
+                <button onclick="showTab('ann-tab')" class="n-btn" id="btn-ann">📢 BÜLTEN</button>
+                <button onclick="showTab('proj-tab')" class="n-btn" id="btn-proj">📂 OPERASYONLAR</button>
+                <button onclick="showTab('top-secret-tab')" class="n-btn special" id="btn-top">⚡ ÜST MEVKİ</button>
             </nav>
 
-            <div class="sidebar-bottom">
-                <div class="user-profile">
-                    <div id="op-name">OPERATÖR: ---</div>
-                    <div id="op-location">📍 KONUM: BELİRLENİYOR</div>
-                </div>
-                <button onclick="location.reload()" class="btn-kill">BAĞLANTIYI KES</button>
+            <div class="side-footer">
+                <div id="op-name">---</div>
+                <div id="op-location">📍 KONUM BEKLENİYOR</div>
+                <button onclick="location.reload()" class="kill-btn">BAĞLANTIYI KES</button>
             </div>
         </aside>
 
-        <section class="content-frame">
+        <main class="main-stage">
             <div id="chat-tab" class="tab-content">
-                <div class="frame-header">KRİPTOLU İLETİŞİM KANALI</div>
+                <div class="stage-header">STRATEJİK İLETİŞİM KANALI</div>
                 <div id="chat-display"></div>
-                <div class="chat-input-wrapper">
-                    <input type="text" id="chat-message" placeholder="Mesajını ilet..." onkeypress="if(event.key==='Enter') sendLiveMessage()">
+                <div class="chat-bar">
+                    <input type="text" id="chat-message" placeholder="Komut ilet..." onkeypress="if(event.key==='Enter') sendLiveMessage()">
                     <button onclick="sendLiveMessage()">GÖNDER</button>
                 </div>
             </div>
 
             <div id="ann-tab" class="tab-content" style="display: none;">
-                <div class="frame-header">MERKEZİ YAYINLAR</div>
-                <div id="ann-list" class="pro-grid"></div>
+                <div class="stage-header">MERKEZİ DUYURULAR</div>
+                <div id="ann-list" class="grid-layout"></div>
             </div>
 
             <div id="proj-tab" class="tab-content" style="display: none;">
-                <div class="frame-header">AKTİF PROJELER</div>
-                <div class="pro-grid">
-                    <div class="pro-card">
-                        <div class="card-tag">DEVAM EDİYOR</div>
-                        <h3>ROBLOX BUS SIMULATOR</h3>
-                        <p>IETT durakları ve yolcu ödeme sistemleri optimize ediliyor.</p>
-                        <div class="progress-container"><div class="progress-bar" style="width: 85%;"></div></div>
-                    </div>
-                    <div class="pro-card">
-                        <div class="card-tag wa">TEST AŞAMASI</div>
-                        <h3>FOOTBALL REAL PHYSICS</h3>
-                        <p>Güç barı mekanikleri ve kaleci yapay zekası güncelleniyor.</p>
-                        <div class="progress-container"><div class="progress-bar" style="width: 45%;"></div></div>
-                    </div>
-                </div>
+                <div class="stage-header">AKTİF OPERASYONLAR</div>
+                <div class="grid-layout" id="project-list"></div>
             </div>
-        </section>
+
+            <div id="top-secret-tab" class="tab-content" style="display: none;">
+                <div class="stage-header">ÜST MEVKİ VERİ TABANI</div>
+                <div id="secret-auth" class="secret-overlay">
+                    <h3>YETKİ KONTROLÜ</h3>
+                    <input type="password" id="secret-key" placeholder="ÜST MEVKİ ŞİFRESİ">
+                    <button onclick="unlockSecret()" class="pro-btn">YETKİ AL</button>
+                </div>
+                <div id="secret-content" style="display: none;" class="grid-layout">
+                    </div>
+            </div>
+        </main>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
