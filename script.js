@@ -1,41 +1,35 @@
-// GİRİŞ KONTROLÜ
 function checkLogin() {
-    const user = document.getElementById('username').value.toLowerCase();
+    const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value;
 
-    const database = { "admin": "12345", "zeki": "aslan" };
+    // Şifre Listesi
+    const members = { "admin": "12345", "zeki": "aslan", "berat": "ipt2026" };
 
-    if (database[user] && database[user] === pass) {
+    if (members[user.toLowerCase()] === pass) {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('main-panel').style.display = 'block';
-        loadAnnouncements(); // Giriş yapınca duyuruları yükle
+        document.getElementById('op-name').innerText = "OPERATÖR: " + user.toUpperCase();
+        loadAnnouncements();
     } else {
-        alert("ERİŞİM REDDEDİLDİ!");
+        alert("YETKİSİZ ERİŞİM! Sinyal Kesildi.");
     }
 }
 
-// SEKMELER
-function showTab(tabId) {
+function showTab(id) {
     const tabs = document.getElementsByClassName('tab-content');
-    for (let i = 0; i < tabs.length; i++) { tabs[i].style.display = 'none'; }
-    document.getElementById(tabId).style.display = 'block';
+    for (let t of tabs) { t.style.display = 'none'; }
+    document.getElementById(id).style.display = 'block';
 }
 
-// DUYURU SİSTEMİ
 const duyurular = [
-    { baslik: "TEŞKİLAT KURULDU", icerik: "İmanPowerTeşkilatı dijital üssü başarıyla aktif edildi. Tüm üyelere duyurulur." },
-    { baslik: "GÜVENLİK UYARISI", icerik: "Şifrelerinizi kimseyle paylaşmayın. Sinyal takibi yapılıyor." }
+    { baslik: "SİSTEM GÜNCELLENDİ (V3)", icerik: "Chat yazma sorunu çözüldü, yeni butonlar eklendi." },
+    { baslik: "OPERASYON EMRİ", icerik: "Zekiler ekibi GitHub üzerinde toplanıyor." }
 ];
 
 function loadAnnouncements() {
-    const list = document.getElementById('announcement-list');
-    list.innerHTML = "";
-    duyurular.forEach(item => {
-        list.innerHTML += `
-            <div class="ann-card">
-                <h4>${item.baslik}</h4>
-                <p>${item.icerik}</p>
-            </div>
-        `;
+    const box = document.getElementById('ann-list');
+    box.innerHTML = "";
+    duyurular.forEach(d => {
+        box.innerHTML += `<div class="ann-item"><h3>${d.baslik}</h3><p>${d.icerik}</p></div>`;
     });
 }
