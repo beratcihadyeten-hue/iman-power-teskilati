@@ -3,81 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İmanPowerTeşkilatı | v2.5</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>İPT | Operasyon Merkezi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #00ff41; --bg: #030303; --c: #0d0d0d; --glass: rgba(255, 255, 255, 0.03); }
+        :root { --p: #00ff41; --bg: #050505; --c: #0f0f0f; --glass: rgba(255, 255, 255, 0.02); }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; margin: 0; padding: 0; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; }
-        #login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
-        .login-card { width: 90%; max-width: 400px; padding: 40px; background: var(--c); border: 1px solid var(--p); border-radius: 20px; text-align: center; box-shadow: 0 0 50px rgba(0, 255, 65, 0.1); }
-        .login-card h1 { font-family: 'Orbitron'; font-weight: 900; color: var(--p); letter-spacing: 5px; margin-bottom: 30px; }
-        .inp-group { margin-bottom: 20px; text-align: left; }
-        .inp-group label { color: var(--p); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-left: 10px; }
-        input { width: 100%; padding: 15px; background: rgba(0,0,0,0.5); border: 1px solid #222; color: #fff; border-radius: 12px; font-family: 'Rajdhani'; font-size: 1.1rem; }
-        .btn-join { width: 100%; padding: 18px; background: var(--p); color: #000; border: none; border-radius: 12px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; transition: 0.4s; }
-        #app { display: none; width: 100%; height: 100%; flex-direction: column; }
-        nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: var(--c); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; z-index: 500; }
-        .nav-item { color: #555; text-decoration: none; font-family: 'Orbitron'; font-size: 0.7rem; cursor: pointer; text-align: center; transition: 0.3s; }
+        
+        body { 
+            background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; 
+            margin: 0; padding: 0; height: 100vh; overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* --- SİBER GİRİŞ EKRANI --- */
+        #login-screen { 
+            position: fixed; inset: 0; background: radial-gradient(circle at center, #111 0%, #000 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .login-card {
+            width: 90%; max-width: 400px; padding: 40px; background: var(--c);
+            border: 1px solid var(--p); border-radius: 20px; text-align: center;
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.1); border-top: 5px solid var(--p);
+        }
+        .login-card h1 { font-family: 'Orbitron'; font-weight: 900; color: var(--p); letter-spacing: 5px; margin-bottom: 30px; text-shadow: 0 0 10px var(--p); }
+        .inp-group { margin-bottom: 15px; text-align: left; }
+        label { color: var(--p); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-left: 5px; letter-spacing: 1px; }
+        input { 
+            width: 100%; padding: 15px; background: #000; border: 1px solid #222; 
+            color: #fff; border-radius: 10px; font-family: 'Rajdhani'; font-size: 1.1rem; margin-top: 5px;
+        }
+        input:focus { border-color: var(--p); box-shadow: 0 0 15px rgba(0,255,65,0.2); }
+        .btn-main { 
+            width: 100%; padding: 18px; background: var(--p); color: #000; border: none; 
+            border-radius: 10px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 15px;
+        }
+
+        /* --- ANA APP YAPISI --- */
+        #app { display: none; width: 100%; height: 100%; flex-direction: column; background: var(--bg); }
+
+        /* NAVİGASYON (ALT BAR) */
+        nav { 
+            position: fixed; bottom: 0; width: 100%; height: 75px; background: #000;
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid #1a1a1a; z-index: 500; padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-item { color: #444; font-family: 'Orbitron'; font-size: 0.65rem; cursor: pointer; text-align: center; transition: 0.3s; padding: 10px; }
         .nav-item.active { color: var(--p); text-shadow: 0 0 10px var(--p); }
-        .page { display: none; flex-direction: column; height: calc(100vh - 70px); padding: 20px; padding-top: 40px; overflow-y: auto; }
+        .nav-item i { font-size: 1.2rem; display: block; margin-bottom: 4px; }
+
+        /* SAYFA İÇERİKLERİ */
+        .page { display: none; flex-direction: column; height: calc(100vh - 75px); padding: 20px; overflow-y: auto; animation: fade 0.4s ease; }
         .page.active { display: flex; }
-        #chat-content, #ann-list { flex-grow: 1; display: flex; flex-direction: column; gap: 15px; padding-bottom: 80px; }
-        .msg { background: var(--glass); border: 1px solid #222; padding: 12px 18px; border-radius: 15px; max-width: 80%; }
-        .msg.me { align-self: flex-end; border-color: var(--p); background: rgba(0, 255, 65, 0.05); }
-        .msg b { color: var(--p); font-size: 0.8rem; display: block; margin-bottom: 5px; }
-        .chat-input-area { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 600px; display: flex; gap: 10px; }
-        .ann-card { background: var(--c); border-left: 5px solid var(--p); padding: 20px; border-radius: 10px; animation: glow 2s infinite alternate; }
-        .ann-date { display: block; font-size: 0.65rem; color: #555; margin-top: 10px; font-family: 'Orbitron'; }
-        @keyframes glow { from { box-shadow: 0 0 5px rgba(0,255,65,0.1); } to { box-shadow: 0 0 20px rgba(0,255,65,0.3); } }
-        .admin-stat { background: #111; padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #222; }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
-        .online { background: var(--p); box-shadow: 0 0 10px var(--p); }
-        .offline { background: #555; }
+        @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* MESAJLAR */
+        #chat-list { flex-grow: 1; display: flex; flex-direction: column; gap: 12px; padding-bottom: 100px; }
+        .m-wrap { max-width: 85%; align-self: flex-start; }
+        .m-wrap.me { align-self: flex-end; }
+        .m-box { background: #111; border: 1px solid #222; padding: 12px 15px; border-radius: 15px; border-bottom-left-radius: 2px; }
+        .me .m-box { background: rgba(0, 255, 65, 0.05); border-color: var(--p); border-bottom-left-radius: 15px; border-bottom-right-radius: 2px; }
+        .m-user { color: var(--p); font-weight: 700; font-size: 0.75rem; display: block; margin-bottom: 3px; }
+        
+        .chat-input-fixed { 
+            position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%);
+            width: 92%; max-width: 500px; display: flex; gap: 8px; background: #000; padding: 8px; border-radius: 15px; border: 1px solid #222;
+        }
+
+        /* DUYURULAR */
+        .ann-card { background: #0a0a0a; border: 1px solid #222; padding: 20px; border-radius: 15px; margin-bottom: 15px; border-left: 4px solid var(--p); }
+        .ann-time { color: #444; font-size: 0.65rem; font-family: 'Orbitron'; margin-top: 10px; display: block; }
+
+        /* ADMİN ÖZEL */
+        .stat-item { background: #0c0c0c; border: 1px solid #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; box-shadow: 0 0 5px currentColor; }
+        .btn-admin { padding: 15px; border-radius: 10px; border: none; font-family: 'Orbitron'; font-weight: 700; cursor: pointer; margin-top: 10px; width: 100%; }
     </style>
 </head>
 <body>
+
     <div id="login-screen">
         <div class="login-card">
-            <h1>İM-P-T</h1>
-            <div class="inp-group"><label>Kod Adı</label><input type="text" id="uName"></div>
-            <div class="inp-group"><label>Gmail</label><input type="email" id="uMail"></div>
-            <div class="inp-group"><label>Şifre</label><input type="password" id="uPass"></div>
-            <button class="btn-join" onclick="login()">SİSTEME GİR</button>
+            <h1>TEŞKİLAT</h1>
+            <div class="inp-group"><label>Kod Adı</label><input type="text" id="u"></div>
+            <div class="inp-group"><label>Gmail</label><input type="email" id="m"></div>
+            <div class="inp-group"><label>Şifre</label><input type="password" id="p"></div>
+            <button class="btn-main" onclick="login()">SİSTEME SIZ</button>
         </div>
     </div>
 
     <div id="app">
         <div id="page-ann" class="page active">
-            <h2 style="font-family:'Orbitron'; color:var(--p)">OPERASYON KAYITLARI</h2>
-            <div id="ann-list"></div>
+            <h2 style="font-family:'Orbitron'; color:var(--p); border-bottom:1px solid #222; padding-bottom:10px;">OPERASYON KAYITLARI</h2>
+            <div id="ann-container"></div>
         </div>
+
         <div id="page-chat" class="page">
-            <div id="chat-content"></div>
-            <div class="chat-input-area">
-                <input type="text" id="mInp" placeholder="Şifreli mesaj...">
-                <button class="btn-join" style="width:60px; padding:10px;" onclick="send()">></button>
+            <div id="chat-list"></div>
+            <div class="chat-input-fixed">
+                <input type="text" id="msgI" placeholder="Mesajı şifrele...">
+                <button onclick="send()" style="background:var(--p); border:none; padding:10px 15px; border-radius:10px; font-weight:900;">></button>
             </div>
         </div>
+
         <div id="page-admin" class="page">
-            <h2 style="font-family:'Orbitron'; color:#ff3e3e">YÖNETİM PANELİ</h2>
-            <div id="admin-auth">
-                <input type="password" id="adminKey" placeholder="Yönetici Anahtarı">
-                <button class="btn-join" style="margin-top:10px;" onclick="authAdmin()">DOĞRULA</button>
+            <h2 style="font-family:'Orbitron'; color:#ff3e3e;">ADMİN TERMİNALİ</h2>
+            <div id="adm-auth">
+                <input type="password" id="admK" placeholder="Admin Anahtarı">
+                <button class="btn-main" style="background:#ff3e3e;" onclick="auth()">YETKİ AL</button>
             </div>
-            <div id="admin-tools" style="display:none;">
-                <h3>AJAN DURUMLARI</h3>
-                <div id="user-status-list"></div>
-                <hr style="border:0; border-top:1px solid #222; margin:20px 0;">
-                <button class="btn-join" style="background:#ff3e3e;" onclick="clearChat()">CHAT SIFIRLA</button>
-                <button class="btn-join" style="margin-top:10px;" onclick="updateAnn()">YENİ DUYURU</button>
-                <button class="btn-join" style="margin-top:10px; background:#444;" onclick="clearAnn()">DUYURULARI TEMİZLE</button>
+            <div id="adm-panel" style="display:none;">
+                <p style="color:var(--p)">[✓] Yetki Doğrulandı</p>
+                <h3>AKTİF DURUM</h3>
+                <div id="status-list"></div>
+                <button class="btn-admin" style="background:#222; color:#fff;" onclick="newAnn()">DUYURU EKLE</button>
+                <button class="btn-admin" style="background:#ff3e3e; color:#fff;" onclick="clearC()">SOHBETİ TEMİZLE</button>
+                <button class="btn-admin" style="background:#444; color:#fff;" onclick="clearA()">KAYITLARI SİL</button>
             </div>
         </div>
+
         <nav>
-            <div class="nav-item active" onclick="showPage('ann', this)">📢<br>KAYITLAR</div>
-            <div class="nav-item" onclick="showPage('chat', this)">💬<br>MESAJ</div>
-            <div class="nav-item" onclick="showPage('admin', this)">🛡️<br>ADMIN</div>
+            <div class="nav-item active" onclick="tab('ann', this)"><span>📢</span><br>KAYITLAR</div>
+            <div class="nav-item" onclick="tab('chat', this)"><span>💬</span><br>MESAJ</div>
+            <div class="nav-item" onclick="tab('admin', this)"><span>🛡️</span><br>ADMİN</div>
         </nav>
     </div>
 
@@ -104,73 +151,81 @@
             "duvaradam": { m: "beratcihadyeten@gmail.com", p: "geçityokberobaba41" }
         };
 
-        let me = null;
+        let me = "";
 
-        window.login = function() {
-            const u = document.getElementById('uName').value;
-            const m = document.getElementById('uMail').value;
-            const p = document.getElementById('uPass').value;
-            if(users[u] && users[u].m === m && users[u].p === p) {
-                me = u; document.getElementById('login-screen').style.display = 'none'; document.getElementById('app').style.display = 'flex';
-                const sRef = ref(db, 'status/' + u); set(sRef, true); onDisconnect(sRef).set(false);
-                startSystem();
+        window.login = () => {
+            const user = document.getElementById('u').value;
+            const mail = document.getElementById('m').value;
+            const pass = document.getElementById('p').value;
+
+            if(users[user] && users[user].m === mail && users[user].p === pass) {
+                me = user;
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app').style.display = 'flex';
+                const sR = ref(db, 'online/' + user);
+                set(sR, true); onDisconnect(sR).set(false);
+                run();
             } else { alert("Erişim Reddedildi!"); }
         };
 
-        function startSystem() {
-            onValue(ref(db, 'chat'), (s) => {
-                const box = document.getElementById('chat-content'); box.innerHTML = '';
-                s.forEach(m => { const d = m.val(); box.innerHTML += `<div class="msg ${d.u === me ? 'me' : ''}"><b>${d.u}</b>${d.t}</div>`; });
-                box.scrollTop = box.scrollHeight;
+        function run() {
+            // Chat
+            onValue(ref(db, 'messages'), (s) => {
+                const list = document.getElementById('chat-list'); list.innerHTML = '';
+                s.forEach(i => {
+                    const d = i.val();
+                    list.innerHTML += `<div class="m-wrap ${d.u === me ? 'me' : ''}"><div class="m-box"><span class="m-user">${d.u}</span>${d.t}</div></div>`;
+                });
+                document.getElementById('page-chat').scrollTop = document.getElementById('page-chat').scrollHeight;
             });
 
-            onValue(ref(db, 'announcements'), (s) => {
-                const list = document.getElementById('ann-list'); list.innerHTML = '';
-                const items = [];
-                s.forEach(a => { items.unshift(a.val()); }); // En yeni en üstte
+            // Duyurular
+            onValue(ref(db, 'ann'), (s) => {
+                const cont = document.getElementById('ann-container'); cont.innerHTML = '';
+                let items = []; s.forEach(i => { items.unshift(i.val()); });
                 items.forEach(d => {
-                    list.innerHTML += `<div class="ann-card">${d.t}<span class="ann-date">${d.date}</span></div>`;
+                    cont.innerHTML += `<div class="ann-card">${d.t}<span class="ann-time">${d.d}</span></div>`;
                 });
             });
-            
-            onValue(ref(db, 'status'), (s) => {
-                const list = document.getElementById('user-status-list'); list.innerHTML = '';
+
+            // Status
+            onValue(ref(db, 'online'), (s) => {
+                const list = document.getElementById('status-list'); list.innerHTML = '';
                 Object.keys(users).forEach(u => {
-                    const isOnline = s.val() && s.val()[u];
-                    list.innerHTML += `<div class="admin-stat"><span class="status-dot ${isOnline ? 'online' : 'offline'}"></span> ${u}</div>`;
+                    const isO = s.val() && s.val()[u];
+                    list.innerHTML += `<div class="stat-item">${u} <span class="dot" style="color:${isO ? '#00ff41' : '#444'}; background:${isO ? '#00ff41' : '#444'}"></span></div>`;
                 });
             });
         }
 
-        window.showPage = (id, el) => {
+        window.tab = (id, el) => {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById('page-' + id).classList.add('active'); el.classList.add('active');
         };
 
         window.send = () => {
-            const t = document.getElementById('mInp').value;
-            if(t) { push(ref(db, 'chat'), { u: me, t: t }); document.getElementById('mInp').value = ''; }
+            const v = document.getElementById('msgI').value;
+            if(v) { push(ref(db, 'messages'), { u: me, t: v }); document.getElementById('msgI').value = ''; }
         };
 
-        window.authAdmin = () => {
-            if(document.getElementById('adminKey').value === "imanpoweradmini31") {
-                document.getElementById('admin-auth').style.display = 'none';
-                document.getElementById('admin-tools').style.display = 'block';
-            } else { alert("Yanlış Anahtar!"); }
+        window.auth = () => {
+            if(document.getElementById('admK').value === "imanpoweradmini31") {
+                document.getElementById('adm-auth').style.display = 'none';
+                document.getElementById('adm-panel').style.display = 'block';
+            } else { alert("Yetkisiz!"); }
         };
 
-        window.updateAnn = () => {
-            const n = prompt("Duyuru metni:");
-            if(n) {
-                const now = new Date();
-                const dateStr = now.toLocaleDateString('tr-TR') + " | " + now.toLocaleTimeString('tr-TR', {hour: '2-digit', minute:'2-digit'});
-                push(ref(db, 'announcements'), { t: n, date: dateStr });
+        window.newAnn = () => {
+            const t = prompt("Duyuru:");
+            if(t) {
+                const d = new Date().toLocaleString('tr-TR');
+                push(ref(db, 'ann'), { t, d });
             }
         };
 
-        window.clearChat = () => { if(confirm("Chat silinsin mi?")) set(ref(db, 'chat'), null); };
-        window.clearAnn = () => { if(confirm("Tüm duyuru geçmişi silinsin mi?")) set(ref(db, 'announcements'), null); };
+        window.clearC = () => { if(confirm("Sohbet silinsin mi?")) set(ref(db, 'messages'), null); };
+        window.clearA = () => { if(confirm("Tüm kayıtlar silinsin mi?")) set(ref(db, 'ann'), null); };
     </script>
 </body>
 </html>
