@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İPT v5.4 | Final Sistem</title>
+    <title>İPT v5.5 | Tam Kontrol</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --p: #00ff41; --bg: #050505; --c: #0f0f0f; }
@@ -23,12 +23,12 @@
         .page { display: none; flex-direction: column; gap: 15px; }
         .page.active { display: flex; }
 
-        /* ALT NAVİGASYON */
+        /* NAVİGASYON */
         nav { position: fixed; bottom: 0; width: 100%; height: 75px; background: #0a0a0a; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #444; font-size: 0.65rem; font-family: 'Orbitron'; cursor: pointer; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #444; font-size: 0.65rem; font-family: 'Orbitron'; cursor: pointer; transition: 0.3s; }
         .nav-item.active { color: var(--p); text-shadow: 0 0 10px var(--p); }
 
-        /* KUTULAR & CHAT */
+        /* KUTULAR */
         .box { background: #111; border: 1px solid #222; padding: 12px; border-radius: 12px; border-left: 4px solid var(--p); margin-bottom: 10px; }
         .chat-msg { margin-bottom: 8px; max-width: 85%; }
         .chat-msg.me { align-self: flex-end; }
@@ -36,19 +36,18 @@
         .me .msg-inner { border-color: var(--p); background: rgba(0,255,65,0.05); }
         .chat-input-area { position: fixed; bottom: 85px; left: 5%; width: 90%; display: flex; gap: 8px; background: #000; padding: 5px; border-radius: 12px; }
 
-        /* KÜÇÜLTÜLMÜŞ VİDEO GRID */
+        /* VİDEO GRID */
         .v-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .v-card { background: #111; border-radius: 8px; overflow: hidden; border: 1px solid #222; }
-        .v-card iframe { width: 100%; aspect-ratio: 16/9; border: none; }
+        .v-card iframe { width: 100%; aspect-ratio: 16/9; border: none; pointer-events: auto; }
         .v-title { padding: 6px; color: var(--p); font-size: 0.65rem; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        /* ARAMA EKRANI */
+        /* ARAMA */
         .call-container { text-align: center; margin-top: 30px; }
         .call-btn { width: 90px; height: 90px; border-radius: 50%; background: var(--p); border: none; font-size: 2rem; cursor: pointer; }
         .pulse { animation: p 2s infinite; }
         @keyframes p { 0% { box-shadow: 0 0 0 0px rgba(0, 255, 65, 0.4); } 100% { box-shadow: 0 0 0 20px rgba(0, 255, 65, 0); } }
 
-        /* ADMIN AKTİFLER */
         .user-row { display: flex; justify-content: space-between; padding: 8px; background: #0c0c0c; border: 1px solid #1a1a1a; border-radius: 6px; margin-bottom: 4px; font-size: 0.8rem; }
         .online-dot { width: 8px; height: 8px; border-radius: 50%; background: #222; }
         .online-dot.active { background: var(--p); box-shadow: 0 0 8px var(--p); }
@@ -89,7 +88,7 @@
             <div id="p-chat" class="page">
                 <div id="chat-list" style="display:flex; flex-direction:column;"></div>
                 <div class="chat-input-area">
-                    <input type="text" id="mI" placeholder="Mesaj..." style="margin:0;">
+                    <input type="text" id="mI" placeholder="Mesaj...">
                     <button id="sB" style="background:var(--p); border:none; width:50px; border-radius:8px; font-weight:bold;">></button>
                 </div>
             </div>
@@ -100,11 +99,12 @@
                 <div id="adm-ctrl" style="display:none;">
                     <div id="u-list" style="margin-bottom:15px;"></div>
                     <button class="btn-main" id="nAnn">📢 DUYURU EKLE</button>
-                    <button class="btn-main" id="dAnn" style="background:#444; color:#fff;">🗑️ DUYURULARI SIFIRLA</button>
-                    <button class="btn-main" id="nVid" style="background:#00aaff; color:#fff;">🎬 VİDEO EKLE</button>
+                    <button class="btn-main" id="dAnn" style="background:#444;">🗑️ DUYURULARI SIFIRLA</button>
+                    <button class="btn-main" id="nVid" style="background:#00aaff;">🎬 VİDEO EKLE</button>
+                    <button class="btn-main" id="dVid" style="background:#005577;">🗑️ VİDEOLARI SIFIRLA</button>
                     <button class="btn-main" id="sCl" style="background:#ff9900; color:#000;">📞 ARAMA BAŞLAT</button>
-                    <button class="btn-main" id="eCl" style="background:#7a0000; color:#fff;">🚫 ARAMAYI BİTİR</button>
-                    <button class="btn-main" id="cCl" style="background:#ff3e3e; color:#fff;">🗑️ CHATİ TEMİZLE</button>
+                    <button class="btn-main" id="eCl" style="background:#7a0000;">🚫 ARAMAYI BİTİR</button>
+                    <button class="btn-main" id="cCl" style="background:#ff3e3e;">🗑️ CHATİ TEMİZLE</button>
                 </div>
             </div>
         </div>
@@ -173,16 +173,16 @@
         function init() {
             onValue(ref(db, 'ann'), s => {
                 const list = document.getElementById('ann-list'); list.innerHTML = '';
-                let data = []; s.forEach(c => { data.unshift(c.val()); });
-                data.forEach(d => { list.innerHTML += `<div class="box"><strong>${d.t}</strong><br><small style="color:#555">${d.time}</small></div>`; });
+                let dta = []; s.forEach(c => { dta.unshift(c.val()); });
+                dta.forEach(d => { list.innerHTML += `<div class="box"><strong>${d.t}</strong><br><small style="color:#555">${d.time}</small></div>`; });
             });
 
             onValue(ref(db, 'videos'), s => {
                 const list = document.getElementById('vid-list'); list.innerHTML = '';
-                let data = []; s.forEach(c => { data.unshift(c.val()); });
-                data.forEach(d => {
+                let dta = []; s.forEach(c => { dta.unshift(c.val()); });
+                dta.forEach(d => {
                     const vidId = d.url.includes('v=') ? d.url.split('v=')[1].split('&')[0] : d.url.split('/').pop();
-                    list.innerHTML += `<div class="v-card"><iframe src="https://www.youtube.com/embed/${vidId}"></iframe><div class="v-title">${d.t}</div></div>`;
+                    list.innerHTML += `<div class="v-card"><iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe><div class="v-title">${d.t}</div></div>`;
                 });
             });
 
@@ -235,16 +235,18 @@
             if(t) push(ref(db, 'ann'), { t: t, time: new Date().toLocaleString('tr-TR') });
         };
 
-        document.getElementById('dAnn').onclick = () => { if(confirm("Tüm duyurular silinsin mi?")) remove(ref(db, 'ann')); };
+        document.getElementById('dAnn').onclick = () => { if(confirm("Duyurular silinsin mi?")) remove(ref(db, 'ann')); };
 
         document.getElementById('nVid').onclick = () => {
             const t = prompt("Başlık:"); const u = prompt("YouTube Link:");
             if(t && u) push(ref(db, 'videos'), { t: t, url: u });
         };
 
+        document.getElementById('dVid').onclick = () => { if(confirm("Tüm videolar silinsin mi?")) remove(ref(db, 'videos')); };
+
         document.getElementById('sCl').onclick = () => { const u = prompt("Arama Linki:"); if(u) set(ref(db, 'callRoom'), { active: true, url: u }); };
         document.getElementById('eCl').onclick = () => { if(confirm("Arama bitirilsin mi?")) set(ref(db, 'callRoom'), { active: false, url: "" }); };
-        document.getElementById('cCl').onclick = () => { if(confirm("Mesajlar temizlensin mi?")) remove(ref(db, 'messages')); };
+        document.getElementById('cCl').onclick = () => { if(confirm("Chat temizlensin mi?")) remove(ref(db, 'messages')); };
     </script>
 </body>
 </html>
