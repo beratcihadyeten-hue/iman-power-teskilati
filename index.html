@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İPT v5.3 | Operasyon Merkezi</title>
+    <title>İPT v5.4 | Final Sistem</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --p: #00ff41; --bg: #050505; --c: #0f0f0f; }
@@ -19,35 +19,38 @@
 
         /* ANA YAPI */
         #app { display: none; height: 100vh; flex-direction: column; }
-        .content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; }
+        .content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 110px; }
         .page { display: none; flex-direction: column; gap: 15px; }
         .page.active { display: flex; }
 
-        /* ALT NAVİGASYON (DÜZELTİLDİ) */
+        /* ALT NAVİGASYON */
         nav { position: fixed; bottom: 0; width: 100%; height: 75px; background: #0a0a0a; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #444; text-decoration: none; font-size: 0.65rem; font-family: 'Orbitron'; cursor: pointer; }
-        .nav-item i { font-size: 1.2rem; margin-bottom: 4px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #444; font-size: 0.65rem; font-family: 'Orbitron'; cursor: pointer; }
         .nav-item.active { color: var(--p); text-shadow: 0 0 10px var(--p); }
 
-        /* DUYURU & CHAT BOX */
-        .box { background: #111; border: 1px solid #222; padding: 15px; border-radius: 12px; border-left: 4px solid var(--p); position: relative; }
-        .chat-msg { margin-bottom: 10px; max-width: 85%; }
+        /* KUTULAR & CHAT */
+        .box { background: #111; border: 1px solid #222; padding: 12px; border-radius: 12px; border-left: 4px solid var(--p); margin-bottom: 10px; }
+        .chat-msg { margin-bottom: 8px; max-width: 85%; }
         .chat-msg.me { align-self: flex-end; }
-        .msg-inner { background: #1a1a1a; padding: 10px; border-radius: 10px; border: 1px solid #333; }
+        .msg-inner { background: #1a1a1a; padding: 8px 12px; border-radius: 10px; border: 1px solid #333; }
         .me .msg-inner { border-color: var(--p); background: rgba(0,255,65,0.05); }
-        
-        /* CHAT INPUT */
-        .chat-input-area { position: fixed; bottom: 85px; left: 5%; width: 90%; display: flex; gap: 10px; background: #000; padding: 5px; border-radius: 12px; }
+        .chat-input-area { position: fixed; bottom: 85px; left: 5%; width: 90%; display: flex; gap: 8px; background: #000; padding: 5px; border-radius: 12px; }
 
-        /* VİDEO GRID */
-        .v-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
-        .v-card { background: #111; border-radius: 12px; overflow: hidden; border: 1px solid #222; }
+        /* KÜÇÜLTÜLMÜŞ VİDEO GRID */
+        .v-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .v-card { background: #111; border-radius: 8px; overflow: hidden; border: 1px solid #222; }
         .v-card iframe { width: 100%; aspect-ratio: 16/9; border: none; }
-        .v-title { padding: 10px; color: var(--p); font-weight: bold; text-align: center; font-size: 0.9rem; }
+        .v-title { padding: 6px; color: var(--p); font-size: 0.65rem; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        /* AKTİF LİSTESİ */
-        .user-row { display: flex; justify-content: space-between; padding: 10px; background: #0c0c0c; border: 1px solid #1a1a1a; border-radius: 8px; margin-bottom: 5px; }
-        .online-dot { width: 10px; height: 10px; border-radius: 50%; background: #222; }
+        /* ARAMA EKRANI */
+        .call-container { text-align: center; margin-top: 30px; }
+        .call-btn { width: 90px; height: 90px; border-radius: 50%; background: var(--p); border: none; font-size: 2rem; cursor: pointer; }
+        .pulse { animation: p 2s infinite; }
+        @keyframes p { 0% { box-shadow: 0 0 0 0px rgba(0, 255, 65, 0.4); } 100% { box-shadow: 0 0 0 20px rgba(0, 255, 65, 0); } }
+
+        /* ADMIN AKTİFLER */
+        .user-row { display: flex; justify-content: space-between; padding: 8px; background: #0c0c0c; border: 1px solid #1a1a1a; border-radius: 6px; margin-bottom: 4px; font-size: 0.8rem; }
+        .online-dot { width: 8px; height: 8px; border-radius: 50%; background: #222; }
         .online-dot.active { background: var(--p); box-shadow: 0 0 8px var(--p); }
     </style>
 </head>
@@ -59,23 +62,31 @@
             <input type="text" id="u" placeholder="Kod Adı">
             <input type="email" id="m" placeholder="Gmail">
             <input type="password" id="p" placeholder="Şifre">
-            <button class="btn-main" id="loginBtn">SİSTEME GİR</button>
+            <button class="btn-main" id="loginBtn">SİSTEME SIZ</button>
         </div>
     </div>
 
     <div id="app">
         <div class="content">
             <div id="p-ann" class="page active">
-                <h2 style="color:var(--p); font-family:'Orbitron';">KAYITLAR</h2>
+                <h2 style="color:var(--p); font-family:'Orbitron'; font-size:1.2rem; margin-bottom:10px;">KAYITLAR</h2>
                 <div id="ann-list"></div>
             </div>
             
             <div id="p-vid" class="page">
-                <h2 style="color:var(--p); font-family:'Orbitron';">VİDEOLAR</h2>
+                <h2 style="color:var(--p); font-family:'Orbitron'; font-size:1.2rem; margin-bottom:10px;">VİDEOLAR</h2>
                 <div id="vid-list" class="v-grid"></div>
             </div>
 
-            <div id="p-chat" class="page" style="display:none; flex-direction:column;">
+            <div id="p-call" class="page">
+                <h2 style="color:var(--p); font-family:'Orbitron'; font-size:1.2rem;">GÜVENLİ HAT</h2>
+                <div class="call-container">
+                    <button id="callBtn" class="call-btn" onclick="startCall()">📞</button>
+                    <h3 id="call-status" style="margin-top:15px; color:#444;">BEKLENİYOR...</h3>
+                </div>
+            </div>
+
+            <div id="p-chat" class="page">
                 <div id="chat-list" style="display:flex; flex-direction:column;"></div>
                 <div class="chat-input-area">
                     <input type="text" id="mI" placeholder="Mesaj..." style="margin:0;">
@@ -84,22 +95,26 @@
             </div>
 
             <div id="p-adm" class="page">
-                <h2 style="color:#ff3e3e; font-family:'Orbitron';">ADMİN PANEL</h2>
-                <div id="adm-form"><input type="password" id="aK" placeholder="Admin Anahtarı"><button class="btn-main" id="aB" style="background:#ff3e3e;">YETKİ VER</button></div>
+                <h2 style="color:#ff3e3e; font-family:'Orbitron'; font-size:1.2rem;">YÖNETİM</h2>
+                <div id="adm-form"><input type="password" id="aK" placeholder="Admin Key"><button class="btn-main" id="aB" style="background:#ff3e3e;">YETKİ AL</button></div>
                 <div id="adm-ctrl" style="display:none;">
-                    <div id="u-list" style="margin-bottom:20px;"></div>
-                    <button class="btn-main" id="nAnn">📢 DUYURU PAYLAŞ</button>
-                    <button class="btn-main" id="nVid" style="background:#00aaff;">🎬 VİDEO YÜKLE</button>
-                    <button class="btn-main" id="cCl" style="background:#ff3e3e;">🗑️ CHATI TEMİZLE</button>
+                    <div id="u-list" style="margin-bottom:15px;"></div>
+                    <button class="btn-main" id="nAnn">📢 DUYURU EKLE</button>
+                    <button class="btn-main" id="dAnn" style="background:#444; color:#fff;">🗑️ DUYURULARI SIFIRLA</button>
+                    <button class="btn-main" id="nVid" style="background:#00aaff; color:#fff;">🎬 VİDEO EKLE</button>
+                    <button class="btn-main" id="sCl" style="background:#ff9900; color:#000;">📞 ARAMA BAŞLAT</button>
+                    <button class="btn-main" id="eCl" style="background:#7a0000; color:#fff;">🚫 ARAMAYI BİTİR</button>
+                    <button class="btn-main" id="cCl" style="background:#ff3e3e; color:#fff;">🗑️ CHATİ TEMİZLE</button>
                 </div>
             </div>
         </div>
 
         <nav>
-            <div class="nav-item active" onclick="go('ann', this)"><i>📢</i><span>KAYIT</span></div>
-            <div class="nav-item" onclick="go('vid', this)"><i>🎬</i><span>VİDEO</span></div>
-            <div class="nav-item" onclick="go('chat', this)"><i>💬</i><span>CHAT</span></div>
-            <div class="nav-item" onclick="go('adm', this)"><i>🛡️</i><span>ADMİN</span></div>
+            <div class="nav-item active" onclick="go('ann', this)">📢<span>KAYIT</span></div>
+            <div class="nav-item" onclick="go('vid', this)">🎬<span>VİDEO</span></div>
+            <div class="nav-item" onclick="go('call', this)">📞<span>HAT</span></div>
+            <div class="nav-item" onclick="tabChat(this)">💬<span>CHAT</span></div>
+            <div class="nav-item" onclick="go('adm', this)">🛡️<span>ADMİN</span></div>
         </nav>
     </div>
 
@@ -127,13 +142,12 @@
         };
 
         let me = "";
+        window.roomUrl = null;
 
-        // GİRİŞ SİSTEMİ
         document.getElementById('loginBtn').onclick = () => {
             const u = document.getElementById('u').value.trim().toLowerCase();
             const m = document.getElementById('m').value.trim().toLowerCase();
             const p = document.getElementById('p').value.trim();
-            
             if(users[u] && users[u].m === m && users[u].p === p) {
                 me = u;
                 document.getElementById('login-screen').style.display = 'none';
@@ -141,10 +155,9 @@
                 set(ref(db, 'online/' + u), true);
                 onDisconnect(ref(db, 'online/' + u)).remove();
                 init();
-            } else { alert("ERİŞİM REDDEDİLDİ!"); }
+            } else { alert("Erişim Reddedildi."); }
         };
 
-        // SAYFA GEÇİŞİ
         window.go = (id, el) => {
             document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -152,61 +165,64 @@
             el.classList.add('active');
         };
 
+        window.tabChat = (el) => {
+            go('chat', el);
+            setTimeout(() => { document.querySelector('.content').scrollTop = 999999; }, 100);
+        };
+
         function init() {
-            // DUYURULAR (ANLIK)
             onValue(ref(db, 'ann'), s => {
-                const list = document.getElementById('ann-list');
-                list.innerHTML = '';
-                let data = [];
-                s.forEach(child => { data.unshift(child.val()); });
-                data.forEach(d => {
-                    list.innerHTML += `<div class="box"><strong>${d.t}</strong><br><small style="color:#666">${d.time}</small></div><br>`;
-                });
+                const list = document.getElementById('ann-list'); list.innerHTML = '';
+                let data = []; s.forEach(c => { data.unshift(c.val()); });
+                data.forEach(d => { list.innerHTML += `<div class="box"><strong>${d.t}</strong><br><small style="color:#555">${d.time}</small></div>`; });
             });
 
-            // VİDEOLAR (ANLIK)
             onValue(ref(db, 'videos'), s => {
-                const list = document.getElementById('vid-list');
-                list.innerHTML = '';
-                let data = [];
-                s.forEach(child => { data.unshift(child.val()); });
+                const list = document.getElementById('vid-list'); list.innerHTML = '';
+                let data = []; s.forEach(c => { data.unshift(c.val()); });
                 data.forEach(d => {
                     const vidId = d.url.includes('v=') ? d.url.split('v=')[1].split('&')[0] : d.url.split('/').pop();
                     list.innerHTML += `<div class="v-card"><iframe src="https://www.youtube.com/embed/${vidId}"></iframe><div class="v-title">${d.t}</div></div>`;
                 });
             });
 
-            // CHAT
             onValue(ref(db, 'messages'), s => {
-                const list = document.getElementById('chat-list');
-                list.innerHTML = '';
-                s.forEach(child => {
-                    const d = child.val();
+                const list = document.getElementById('chat-list'); list.innerHTML = '';
+                s.forEach(c => {
+                    const d = c.val();
                     list.innerHTML += `<div class="chat-msg ${d.u === me ? 'me' : ''}"><div class="msg-inner"><small style="color:var(--p)">${d.u}</small><br>${d.t}</div></div>`;
                 });
-                document.querySelector('.content').scrollTop = 999999;
             });
 
-            // AKTİFLER
+            onValue(ref(db, 'callRoom'), s => {
+                const st = document.getElementById('call-status'); const btn = document.getElementById('callBtn');
+                if(s.val() && s.val().active) {
+                    st.innerHTML = "🔴 OPERASYON AKTİF"; st.style.color = "red";
+                    btn.classList.add('pulse'); window.roomUrl = s.val().url;
+                } else {
+                    st.innerHTML = "BEKLENİYOR..."; st.style.color = "#444";
+                    btn.classList.remove('pulse'); window.roomUrl = null;
+                }
+            });
+
             onValue(ref(db, 'online'), s => {
-                const list = document.getElementById('u-list');
-                if(!list) return;
-                list.innerHTML = '<h4 style="margin-bottom:10px;">OPERASYONDAKİLER</h4>';
+                const list = document.getElementById('u-list'); if(!list) return;
+                list.innerHTML = '<h4 style="margin-bottom:8px; font-size:0.8rem; color:#aaa;">AKTİF ÜYELER</h4>';
                 const onlines = s.val() || {};
-                Object.keys(users).forEach(usr => {
-                    const status = onlines[usr] ? 'active' : '';
-                    list.innerHTML += `<div class="user-row"><span>${usr.toUpperCase()}</span><div class="online-dot ${status}"></div></div>`;
+                Object.keys(users).forEach(u => {
+                    const status = onlines[u] ? 'active' : '';
+                    list.innerHTML += `<div class="user-row"><span>${u}</span><div class="online-dot ${status}"></div></div>`;
                 });
             });
         }
 
-        // MESAJ GÖNDER
+        window.startCall = () => { if(window.roomUrl) window.open(window.roomUrl, '_blank'); else alert("Aktif bir hat yok!"); };
+
         document.getElementById('sB').onclick = () => {
             const txt = document.getElementById('mI').value;
             if(txt) { push(ref(db, 'messages'), { u: me, t: txt }); document.getElementById('mI').value = ''; }
         };
 
-        // ADMIN İŞLEMLERİ
         document.getElementById('aB').onclick = () => {
             if(document.getElementById('aK').value === "imanpoweradmini31") {
                 document.getElementById('adm-form').style.display = 'none';
@@ -215,19 +231,20 @@
         };
 
         document.getElementById('nAnn').onclick = () => {
-            const t = prompt("Duyuru Metni:");
+            const t = prompt("Duyuru:");
             if(t) push(ref(db, 'ann'), { t: t, time: new Date().toLocaleString('tr-TR') });
         };
 
+        document.getElementById('dAnn').onclick = () => { if(confirm("Tüm duyurular silinsin mi?")) remove(ref(db, 'ann')); };
+
         document.getElementById('nVid').onclick = () => {
-            const t = prompt("Video Başlığı:");
-            const u = prompt("YouTube Linki:");
+            const t = prompt("Başlık:"); const u = prompt("YouTube Link:");
             if(t && u) push(ref(db, 'videos'), { t: t, url: u });
         };
 
-        document.getElementById('cCl').onclick = () => {
-            if(confirm("Tüm mesajlar silinsin mi?")) remove(ref(db, 'messages'));
-        };
+        document.getElementById('sCl').onclick = () => { const u = prompt("Arama Linki:"); if(u) set(ref(db, 'callRoom'), { active: true, url: u }); };
+        document.getElementById('eCl').onclick = () => { if(confirm("Arama bitirilsin mi?")) set(ref(db, 'callRoom'), { active: false, url: "" }); };
+        document.getElementById('cCl').onclick = () => { if(confirm("Mesajlar temizlensin mi?")) remove(ref(db, 'messages')); };
     </script>
 </body>
 </html>
