@@ -3,136 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İPT | Operasyon Merkezi</title>
+    <title>İPT v5.3 | Operasyon Merkezi</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #00ff41; --bg: #050505; --c: #0f0f0f; --glass: rgba(255, 255, 255, 0.02); }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        :root { --p: #00ff41; --bg: #050505; --c: #0f0f0f; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; margin: 0; padding: 0; }
+        body { background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; height: 100vh; overflow: hidden; }
         
-        body { 
-            background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; 
-            margin: 0; padding: 0; height: 100vh; overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
-        }
+        /* GİRİŞ EKRANI */
+        #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .login-card { width: 90%; max-width: 380px; padding: 30px; background: var(--c); border: 2px solid var(--p); border-radius: 20px; text-align: center; }
+        h1 { font-family: 'Orbitron'; color: var(--p); letter-spacing: 4px; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; margin-top: 10px; font-family: 'Rajdhani'; }
+        .btn-main { width: 100%; padding: 15px; background: var(--p); color: #000; border: none; border-radius: 8px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; margin-top: 15px; }
 
-        /* --- SİBER GİRİŞ EKRANI --- */
-        #login-screen { 
-            position: fixed; inset: 0; background: radial-gradient(circle at center, #111 0%, #000 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000;
-        }
-        .login-card {
-            width: 90%; max-width: 400px; padding: 40px; background: var(--c);
-            border: 1px solid var(--p); border-radius: 20px; text-align: center;
-            box-shadow: 0 0 50px rgba(0, 255, 65, 0.1); border-top: 5px solid var(--p);
-        }
-        .login-card h1 { font-family: 'Orbitron'; font-weight: 900; color: var(--p); letter-spacing: 5px; margin-bottom: 30px; text-shadow: 0 0 10px var(--p); }
-        .inp-group { margin-bottom: 15px; text-align: left; }
-        label { color: var(--p); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-left: 5px; letter-spacing: 1px; }
-        input { 
-            width: 100%; padding: 15px; background: #000; border: 1px solid #222; 
-            color: #fff; border-radius: 10px; font-family: 'Rajdhani'; font-size: 1.1rem; margin-top: 5px;
-        }
-        input:focus { border-color: var(--p); box-shadow: 0 0 15px rgba(0,255,65,0.2); }
-        .btn-main { 
-            width: 100%; padding: 18px; background: var(--p); color: #000; border: none; 
-            border-radius: 10px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 15px;
-        }
-
-        /* --- ANA APP YAPISI --- */
-        #app { display: none; width: 100%; height: 100%; flex-direction: column; background: var(--bg); }
-
-        /* NAVİGASYON (ALT BAR) */
-        nav { 
-            position: fixed; bottom: 0; width: 100%; height: 75px; background: #000;
-            display: flex; justify-content: space-around; align-items: center;
-            border-top: 1px solid #1a1a1a; z-index: 500; padding-bottom: env(safe-area-inset-bottom);
-        }
-        .nav-item { color: #444; font-family: 'Orbitron'; font-size: 0.65rem; cursor: pointer; text-align: center; transition: 0.3s; padding: 10px; }
-        .nav-item.active { color: var(--p); text-shadow: 0 0 10px var(--p); }
-        .nav-item i { font-size: 1.2rem; display: block; margin-bottom: 4px; }
-
-        /* SAYFA İÇERİKLERİ */
-        .page { display: none; flex-direction: column; height: calc(100vh - 75px); padding: 20px; overflow-y: auto; animation: fade 0.4s ease; }
+        /* ANA YAPI */
+        #app { display: none; height: 100vh; flex-direction: column; }
+        .content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; }
+        .page { display: none; flex-direction: column; gap: 15px; }
         .page.active { display: flex; }
-        @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* MESAJLAR */
-        #chat-list { flex-grow: 1; display: flex; flex-direction: column; gap: 12px; padding-bottom: 100px; }
-        .m-wrap { max-width: 85%; align-self: flex-start; }
-        .m-wrap.me { align-self: flex-end; }
-        .m-box { background: #111; border: 1px solid #222; padding: 12px 15px; border-radius: 15px; border-bottom-left-radius: 2px; }
-        .me .m-box { background: rgba(0, 255, 65, 0.05); border-color: var(--p); border-bottom-left-radius: 15px; border-bottom-right-radius: 2px; }
-        .m-user { color: var(--p); font-weight: 700; font-size: 0.75rem; display: block; margin-bottom: 3px; }
+        /* ALT NAVİGASYON (DÜZELTİLDİ) */
+        nav { position: fixed; bottom: 0; width: 100%; height: 75px; background: #0a0a0a; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #444; text-decoration: none; font-size: 0.65rem; font-family: 'Orbitron'; cursor: pointer; }
+        .nav-item i { font-size: 1.2rem; margin-bottom: 4px; }
+        .nav-item.active { color: var(--p); text-shadow: 0 0 10px var(--p); }
+
+        /* DUYURU & CHAT BOX */
+        .box { background: #111; border: 1px solid #222; padding: 15px; border-radius: 12px; border-left: 4px solid var(--p); position: relative; }
+        .chat-msg { margin-bottom: 10px; max-width: 85%; }
+        .chat-msg.me { align-self: flex-end; }
+        .msg-inner { background: #1a1a1a; padding: 10px; border-radius: 10px; border: 1px solid #333; }
+        .me .msg-inner { border-color: var(--p); background: rgba(0,255,65,0.05); }
         
-        .chat-input-fixed { 
-            position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%);
-            width: 92%; max-width: 500px; display: flex; gap: 8px; background: #000; padding: 8px; border-radius: 15px; border: 1px solid #222;
-        }
+        /* CHAT INPUT */
+        .chat-input-area { position: fixed; bottom: 85px; left: 5%; width: 90%; display: flex; gap: 10px; background: #000; padding: 5px; border-radius: 12px; }
 
-        /* DUYURULAR */
-        .ann-card { background: #0a0a0a; border: 1px solid #222; padding: 20px; border-radius: 15px; margin-bottom: 15px; border-left: 4px solid var(--p); }
-        .ann-time { color: #444; font-size: 0.65rem; font-family: 'Orbitron'; margin-top: 10px; display: block; }
+        /* VİDEO GRID */
+        .v-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .v-card { background: #111; border-radius: 12px; overflow: hidden; border: 1px solid #222; }
+        .v-card iframe { width: 100%; aspect-ratio: 16/9; border: none; }
+        .v-title { padding: 10px; color: var(--p); font-weight: bold; text-align: center; font-size: 0.9rem; }
 
-        /* ADMİN ÖZEL */
-        .stat-item { background: #0c0c0c; border: 1px solid #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; box-shadow: 0 0 5px currentColor; }
-        .btn-admin { padding: 15px; border-radius: 10px; border: none; font-family: 'Orbitron'; font-weight: 700; cursor: pointer; margin-top: 10px; width: 100%; }
+        /* AKTİF LİSTESİ */
+        .user-row { display: flex; justify-content: space-between; padding: 10px; background: #0c0c0c; border: 1px solid #1a1a1a; border-radius: 8px; margin-bottom: 5px; }
+        .online-dot { width: 10px; height: 10px; border-radius: 50%; background: #222; }
+        .online-dot.active { background: var(--p); box-shadow: 0 0 8px var(--p); }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
         <div class="login-card">
-            <h1>TEŞKİLAT</h1>
-            <div class="inp-group"><label>Kod Adı</label><input type="text" id="u"></div>
-            <div class="inp-group"><label>Gmail</label><input type="email" id="m"></div>
-            <div class="inp-group"><label>Şifre</label><input type="password" id="p"></div>
-            <button class="btn-main" onclick="login()">SİSTEME SIZ</button>
+            <h1>İM-P-T</h1>
+            <input type="text" id="u" placeholder="Kod Adı">
+            <input type="email" id="m" placeholder="Gmail">
+            <input type="password" id="p" placeholder="Şifre">
+            <button class="btn-main" id="loginBtn">SİSTEME GİR</button>
         </div>
     </div>
 
     <div id="app">
-        <div id="page-ann" class="page active">
-            <h2 style="font-family:'Orbitron'; color:var(--p); border-bottom:1px solid #222; padding-bottom:10px;">OPERASYON KAYITLARI</h2>
-            <div id="ann-container"></div>
-        </div>
-
-        <div id="page-chat" class="page">
-            <div id="chat-list"></div>
-            <div class="chat-input-fixed">
-                <input type="text" id="msgI" placeholder="Mesajı şifrele...">
-                <button onclick="send()" style="background:var(--p); border:none; padding:10px 15px; border-radius:10px; font-weight:900;">></button>
+        <div class="content">
+            <div id="p-ann" class="page active">
+                <h2 style="color:var(--p); font-family:'Orbitron';">KAYITLAR</h2>
+                <div id="ann-list"></div>
             </div>
-        </div>
-
-        <div id="page-admin" class="page">
-            <h2 style="font-family:'Orbitron'; color:#ff3e3e;">ADMİN TERMİNALİ</h2>
-            <div id="adm-auth">
-                <input type="password" id="admK" placeholder="Admin Anahtarı">
-                <button class="btn-main" style="background:#ff3e3e;" onclick="auth()">YETKİ AL</button>
+            
+            <div id="p-vid" class="page">
+                <h2 style="color:var(--p); font-family:'Orbitron';">VİDEOLAR</h2>
+                <div id="vid-list" class="v-grid"></div>
             </div>
-            <div id="adm-panel" style="display:none;">
-                <p style="color:var(--p)">[✓] Yetki Doğrulandı</p>
-                <h3>AKTİF DURUM</h3>
-                <div id="status-list"></div>
-                <button class="btn-admin" style="background:#222; color:#fff;" onclick="newAnn()">DUYURU EKLE</button>
-                <button class="btn-admin" style="background:#ff3e3e; color:#fff;" onclick="clearC()">SOHBETİ TEMİZLE</button>
-                <button class="btn-admin" style="background:#444; color:#fff;" onclick="clearA()">KAYITLARI SİL</button>
+
+            <div id="p-chat" class="page" style="display:none; flex-direction:column;">
+                <div id="chat-list" style="display:flex; flex-direction:column;"></div>
+                <div class="chat-input-area">
+                    <input type="text" id="mI" placeholder="Mesaj..." style="margin:0;">
+                    <button id="sB" style="background:var(--p); border:none; width:50px; border-radius:8px; font-weight:bold;">></button>
+                </div>
+            </div>
+
+            <div id="p-adm" class="page">
+                <h2 style="color:#ff3e3e; font-family:'Orbitron';">ADMİN PANEL</h2>
+                <div id="adm-form"><input type="password" id="aK" placeholder="Admin Anahtarı"><button class="btn-main" id="aB" style="background:#ff3e3e;">YETKİ VER</button></div>
+                <div id="adm-ctrl" style="display:none;">
+                    <div id="u-list" style="margin-bottom:20px;"></div>
+                    <button class="btn-main" id="nAnn">📢 DUYURU PAYLAŞ</button>
+                    <button class="btn-main" id="nVid" style="background:#00aaff;">🎬 VİDEO YÜKLE</button>
+                    <button class="btn-main" id="cCl" style="background:#ff3e3e;">🗑️ CHATI TEMİZLE</button>
+                </div>
             </div>
         </div>
 
         <nav>
-            <div class="nav-item active" onclick="tab('ann', this)"><span>📢</span><br>KAYITLAR</div>
-            <div class="nav-item" onclick="tab('chat', this)"><span>💬</span><br>MESAJ</div>
-            <div class="nav-item" onclick="tab('admin', this)"><span>🛡️</span><br>ADMİN</div>
+            <div class="nav-item active" onclick="go('ann', this)"><i>📢</i><span>KAYIT</span></div>
+            <div class="nav-item" onclick="go('vid', this)"><i>🎬</i><span>VİDEO</span></div>
+            <div class="nav-item" onclick="go('chat', this)"><i>💬</i><span>CHAT</span></div>
+            <div class="nav-item" onclick="go('adm', this)"><i>🛡️</i><span>ADMİN</span></div>
         </nav>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+        import { getDatabase, ref, push, onValue, set, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
 
-        const firebaseConfig = {
+        const cfg = {
             apiKey: "AIzaSyBtzTIQm1vvsYZRHV6t9RsTBK3Uma6K8rA",
             authDomain: "imanpowerchat.firebaseapp.com",
             databaseURL: "https://imanpowerchat-default-rtdb.firebaseio.com",
@@ -141,9 +116,8 @@
             appId: "1:809946654937:web:f34de2239ecdeb648036c8"
         };
 
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(cfg);
         const db = getDatabase(app);
-
         const users = {
             "osimhendizkapağı": { m: "mdegirmenci244@gmail.com", p: ".321mustafa" },
             "kuranokuyandefans": { m: "reozt2000@gmail.com", p: ".123reşit321." },
@@ -154,79 +128,106 @@
 
         let me = "";
 
-        window.login = () => {
-            const user = document.getElementById('u').value;
-            const mail = document.getElementById('m').value;
-            const pass = document.getElementById('p').value;
-
-            if(users[user] && users[user].m === mail && users[user].p === pass) {
-                me = user;
+        // GİRİŞ SİSTEMİ
+        document.getElementById('loginBtn').onclick = () => {
+            const u = document.getElementById('u').value.trim().toLowerCase();
+            const m = document.getElementById('m').value.trim().toLowerCase();
+            const p = document.getElementById('p').value.trim();
+            
+            if(users[u] && users[u].m === m && users[u].p === p) {
+                me = u;
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app').style.display = 'flex';
-                const sR = ref(db, 'online/' + user);
-                set(sR, true); onDisconnect(sR).set(false);
-                run();
-            } else { alert("Erişim Reddedildi!"); }
+                set(ref(db, 'online/' + u), true);
+                onDisconnect(ref(db, 'online/' + u)).remove();
+                init();
+            } else { alert("ERİŞİM REDDEDİLDİ!"); }
         };
 
-        function run() {
-            // Chat
-            onValue(ref(db, 'messages'), (s) => {
-                const list = document.getElementById('chat-list'); list.innerHTML = '';
-                s.forEach(i => {
-                    const d = i.val();
-                    list.innerHTML += `<div class="m-wrap ${d.u === me ? 'me' : ''}"><div class="m-box"><span class="m-user">${d.u}</span>${d.t}</div></div>`;
+        // SAYFA GEÇİŞİ
+        window.go = (id, el) => {
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('p-' + id).style.display = 'flex';
+            el.classList.add('active');
+        };
+
+        function init() {
+            // DUYURULAR (ANLIK)
+            onValue(ref(db, 'ann'), s => {
+                const list = document.getElementById('ann-list');
+                list.innerHTML = '';
+                let data = [];
+                s.forEach(child => { data.unshift(child.val()); });
+                data.forEach(d => {
+                    list.innerHTML += `<div class="box"><strong>${d.t}</strong><br><small style="color:#666">${d.time}</small></div><br>`;
                 });
-                document.getElementById('page-chat').scrollTop = document.getElementById('page-chat').scrollHeight;
             });
 
-            // Duyurular
-            onValue(ref(db, 'ann'), (s) => {
-                const cont = document.getElementById('ann-container'); cont.innerHTML = '';
-                let items = []; s.forEach(i => { items.unshift(i.val()); });
-                items.forEach(d => {
-                    cont.innerHTML += `<div class="ann-card">${d.t}<span class="ann-time">${d.d}</span></div>`;
+            // VİDEOLAR (ANLIK)
+            onValue(ref(db, 'videos'), s => {
+                const list = document.getElementById('vid-list');
+                list.innerHTML = '';
+                let data = [];
+                s.forEach(child => { data.unshift(child.val()); });
+                data.forEach(d => {
+                    const vidId = d.url.includes('v=') ? d.url.split('v=')[1].split('&')[0] : d.url.split('/').pop();
+                    list.innerHTML += `<div class="v-card"><iframe src="https://www.youtube.com/embed/${vidId}"></iframe><div class="v-title">${d.t}</div></div>`;
                 });
             });
 
-            // Status
-            onValue(ref(db, 'online'), (s) => {
-                const list = document.getElementById('status-list'); list.innerHTML = '';
-                Object.keys(users).forEach(u => {
-                    const isO = s.val() && s.val()[u];
-                    list.innerHTML += `<div class="stat-item">${u} <span class="dot" style="color:${isO ? '#00ff41' : '#444'}; background:${isO ? '#00ff41' : '#444'}"></span></div>`;
+            // CHAT
+            onValue(ref(db, 'messages'), s => {
+                const list = document.getElementById('chat-list');
+                list.innerHTML = '';
+                s.forEach(child => {
+                    const d = child.val();
+                    list.innerHTML += `<div class="chat-msg ${d.u === me ? 'me' : ''}"><div class="msg-inner"><small style="color:var(--p)">${d.u}</small><br>${d.t}</div></div>`;
+                });
+                document.querySelector('.content').scrollTop = 999999;
+            });
+
+            // AKTİFLER
+            onValue(ref(db, 'online'), s => {
+                const list = document.getElementById('u-list');
+                if(!list) return;
+                list.innerHTML = '<h4 style="margin-bottom:10px;">OPERASYONDAKİLER</h4>';
+                const onlines = s.val() || {};
+                Object.keys(users).forEach(usr => {
+                    const status = onlines[usr] ? 'active' : '';
+                    list.innerHTML += `<div class="user-row"><span>${usr.toUpperCase()}</span><div class="online-dot ${status}"></div></div>`;
                 });
             });
         }
 
-        window.tab = (id, el) => {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('page-' + id).classList.add('active'); el.classList.add('active');
+        // MESAJ GÖNDER
+        document.getElementById('sB').onclick = () => {
+            const txt = document.getElementById('mI').value;
+            if(txt) { push(ref(db, 'messages'), { u: me, t: txt }); document.getElementById('mI').value = ''; }
         };
 
-        window.send = () => {
-            const v = document.getElementById('msgI').value;
-            if(v) { push(ref(db, 'messages'), { u: me, t: v }); document.getElementById('msgI').value = ''; }
-        };
-
-        window.auth = () => {
-            if(document.getElementById('admK').value === "imanpoweradmini31") {
-                document.getElementById('adm-auth').style.display = 'none';
-                document.getElementById('adm-panel').style.display = 'block';
-            } else { alert("Yetkisiz!"); }
-        };
-
-        window.newAnn = () => {
-            const t = prompt("Duyuru:");
-            if(t) {
-                const d = new Date().toLocaleString('tr-TR');
-                push(ref(db, 'ann'), { t, d });
+        // ADMIN İŞLEMLERİ
+        document.getElementById('aB').onclick = () => {
+            if(document.getElementById('aK').value === "imanpoweradmini31") {
+                document.getElementById('adm-form').style.display = 'none';
+                document.getElementById('adm-ctrl').style.display = 'block';
             }
         };
 
-        window.clearC = () => { if(confirm("Sohbet silinsin mi?")) set(ref(db, 'messages'), null); };
-        window.clearA = () => { if(confirm("Tüm kayıtlar silinsin mi?")) set(ref(db, 'ann'), null); };
+        document.getElementById('nAnn').onclick = () => {
+            const t = prompt("Duyuru Metni:");
+            if(t) push(ref(db, 'ann'), { t: t, time: new Date().toLocaleString('tr-TR') });
+        };
+
+        document.getElementById('nVid').onclick = () => {
+            const t = prompt("Video Başlığı:");
+            const u = prompt("YouTube Linki:");
+            if(t && u) push(ref(db, 'videos'), { t: t, url: u });
+        };
+
+        document.getElementById('cCl').onclick = () => {
+            if(confirm("Tüm mesajlar silinsin mi?")) remove(ref(db, 'messages'));
+        };
     </script>
 </body>
 </html>
