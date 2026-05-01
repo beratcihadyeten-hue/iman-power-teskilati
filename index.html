@@ -3,46 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İPT v5.7 | Full Komuta</title>
+    <title>İPT v5.8 | Elite Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #00ff41; --bg: #050505; --c: #0f0f0f; }
+        :root { --p: #00ff41; --bg: #050505; --c: #111; --chat-bg: #0a0a0a; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; margin: 0; padding: 0; }
         body { background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; height: 100vh; overflow: hidden; }
         
-        /* GİRİŞ EKRANI */
+        /* GİRİŞ */
         #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 1000; }
         .login-card { width: 90%; max-width: 380px; padding: 30px; background: var(--c); border: 2px solid var(--p); border-radius: 20px; text-align: center; }
         h1 { font-family: 'Orbitron'; color: var(--p); letter-spacing: 4px; margin-bottom: 20px; }
         input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; margin-top: 10px; font-family: 'Rajdhani'; }
         .btn-main { width: 100%; padding: 15px; background: var(--p); color: #000; border: none; border-radius: 8px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; margin-top: 15px; }
 
-        /* ANA YAPI */
+        /* APP */
         #app { display: none; height: 100vh; flex-direction: column; }
-        .content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 110px; }
+        .content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 120px; scroll-behavior: smooth; }
         .page { display: none; flex-direction: column; gap: 15px; }
         .page.active { display: flex; }
 
-        /* NAVİGASYON */
-        nav { position: fixed; bottom: 0; width: 100%; height: 75px; background: #0a0a0a; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #444; font-size: 0.65rem; font-family: 'Orbitron'; cursor: pointer; }
+        /* MODERN CHAT TASARIMI */
+        #chat-list { display: flex; flex-direction: column; gap: 12px; padding: 10px; }
+        .chat-msg { display: flex; flex-direction: column; max-width: 80%; }
+        .chat-msg.me { align-self: flex-end; }
+        .chat-msg.other { align-self: flex-start; }
+        
+        .msg-inner { padding: 10px 14px; border-radius: 18px; position: relative; font-size: 0.95rem; line-height: 1.4; }
+        .me .msg-inner { background: var(--p); color: #000; border-bottom-right-radius: 2px; box-shadow: 0 4px 15px rgba(0,255,65,0.2); }
+        .other .msg-inner { background: #1a1a1a; color: #fff; border-bottom-left-radius: 2px; border: 1px solid #333; }
+        
+        .msg-u { font-size: 0.7rem; font-weight: 700; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 1px; }
+        .me .msg-u { color: #004411; }
+        .other .msg-u { color: var(--p); }
+
+        .chat-input-area { position: fixed; bottom: 85px; left: 0; width: 100%; padding: 10px 15px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); display: flex; gap: 10px; }
+        .chat-input-area input { margin: 0; border-radius: 25px; padding: 12px 20px; background: #111; border: 1px solid #333; flex: 1; }
+        .send-btn { width: 50px; height: 50px; border-radius: 50%; background: var(--p); border: none; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        /* MEDYA & KAYITLAR */
+        .v-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .v-card { background: #111; border-radius: 15px; overflow: hidden; border: 1px solid #222; }
+        .v-card video, .v-card iframe { width: 100%; aspect-ratio: 16/9; display: block; border: none; }
+        .v-title { padding: 10px; color: var(--p); font-size: 0.8rem; font-weight: bold; background: #161616; }
+        .box { background: #111; border-radius: 12px; padding: 15px; border-left: 4px solid var(--p); margin-bottom: 10px; position: relative; }
+
+        /* NAV */
+        nav { position: fixed; bottom: 0; width: 100%; height: 75px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #444; font-size: 0.6rem; font-family: 'Orbitron'; cursor: pointer; transition: 0.3s; }
         .nav-item.active { color: var(--p); text-shadow: 0 0 10px var(--p); }
+        .nav-item i { font-size: 1.2rem; margin-bottom: 4px; }
 
-        /* MEDYA GRID */
-        .v-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .v-card { background: #111; border-radius: 8px; overflow: hidden; border: 1px solid #222; }
-        .v-card iframe, .v-card video { width: 100%; aspect-ratio: 16/9; border: none; background: #000; }
-        .v-title { padding: 6px; color: var(--p); font-size: 0.65rem; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        /* DİĞER */
-        .box { background: #111; border: 1px solid #222; padding: 12px; border-radius: 12px; border-left: 4px solid var(--p); margin-bottom: 10px; }
-        .chat-input-area { position: fixed; bottom: 85px; left: 5%; width: 90%; display: flex; gap: 8px; background: #000; padding: 5px; border-radius: 12px; }
-        .call-btn { width: 90px; height: 90px; border-radius: 50%; background: var(--p); border: none; font-size: 2rem; cursor: pointer; }
-        .pulse { animation: p 2s infinite; }
-        @keyframes p { 0% { box-shadow: 0 0 0 0px rgba(0, 255, 65, 0.4); } 100% { box-shadow: 0 0 0 20px rgba(0, 255, 65, 0); } }
-        .user-row { display: flex; justify-content: space-between; padding: 8px; background: #0c0c0c; border-radius: 6px; margin-bottom: 4px; font-size: 0.8rem; }
-        .online-dot { width: 8px; height: 8px; border-radius: 50%; background: #222; }
-        .online-dot.active { background: var(--p); box-shadow: 0 0 8px var(--p); }
+        .call-btn { width: 100px; height: 100px; border-radius: 50%; background: var(--p); border: none; font-size: 2.5rem; cursor: pointer; transition: 0.5s; }
+        .pulse { animation: p 1.5s infinite; background: #ff3e3e !important; }
+        @keyframes p { 0% { box-shadow: 0 0 0 0px rgba(255, 62, 62, 0.7); } 100% { box-shadow: 0 0 0 30px rgba(255, 62, 62, 0); } }
     </style>
 </head>
 <body>
@@ -58,32 +72,29 @@
     </div>
 
     <div id="app">
-        <div class="content">
-            <div id="p-ann" class="page active"><h2 style="color:var(--p); font-family:'Orbitron';">KAYITLAR</h2><div id="ann-list"></div></div>
-            <div id="p-vid" class="page"><h2 style="color:var(--p); font-family:'Orbitron';">MEDYA</h2><div id="vid-list" class="v-grid"></div></div>
-            <div id="p-call" class="page">
-                <h2 style="color:var(--p); font-family:'Orbitron';">GÜVENLİ HAT</h2>
-                <div style="text-align:center; margin-top:30px;">
-                    <button id="callBtn" class="call-btn" onclick="startCall()">📞</button>
-                    <h3 id="call-status" style="margin-top:15px; color:#444;">BEKLENİYOR...</h3>
-                </div>
+        <div class="content" id="scroll-area">
+            <div id="p-ann" class="page active"><h2 style="color:var(--p); font-family:'Orbitron'; margin-bottom:15px;">KAYITLAR</h2><div id="ann-list"></div></div>
+            <div id="p-vid" class="page"><h2 style="color:var(--p); font-family:'Orbitron'; margin-bottom:15px;">MEDYA</h2><div id="vid-list" class="v-grid"></div></div>
+            <div id="p-call" class="page" style="align-items:center; justify-content:center; height:100%;">
+                <button id="callBtn" class="call-btn" onclick="startCall()">📞</button>
+                <h3 id="call-status" style="margin-top:20px; color:#444; font-family:'Orbitron';">HAT BEKLENİYOR</h3>
             </div>
-            <div id="p-chat" class="page"><div id="chat-list" style="display:flex; flex-direction:column;"></div><div class="chat-input-area"><input type="text" id="mI" placeholder="Mesaj..."><button id="sB" style="background:var(--p); border:none; width:50px; border-radius:8px; font-weight:bold;">></button></div></div>
+            <div id="p-chat" class="page"><div id="chat-list"></div><div class="chat-input-area"><input type="text" id="mI" placeholder="Mesaj yaz..."><button id="sB" class="send-btn">➤</button></div></div>
             
             <div id="p-adm" class="page">
-                <h2 style="color:#ff3e3e; font-family:'Orbitron';">ADMİN PANELİ</h2>
+                <h2 style="color:#ff3e3e; font-family:'Orbitron';">KOMUTA MERKEZİ</h2>
                 <div id="adm-form"><input type="password" id="aK" placeholder="Admin Key"><button class="btn-main" id="aB" style="background:#ff3e3e;">YETKİ AL</button></div>
                 <div id="adm-ctrl" style="display:none;">
-                    <div id="u-list"></div>
+                    <div id="u-list" style="margin-bottom:20px;"></div>
                     <button class="btn-main" id="nAnn">📢 DUYURU EKLE</button>
-                    <button class="btn-main" id="dAnn" style="background:#444;">🗑️ DUYURULARI SİL</button>
-                    <button class="btn-main" id="nVid" style="background:#00aaff;">🎬 YT / LİNK EKLE</button>
+                    <button class="btn-main" id="dAnn" style="background:#333;">🗑️ DUYURULARI SIFIRLA</button>
+                    <button class="btn-main" id="nVid" style="background:#0055ff;">🎬 LİNK EKLE (YT/WEB)</button>
                     <input type="file" id="fVid" accept="video/*" style="display:none;">
-                    <button class="btn-main" onclick="document.getElementById('fVid').click()" style="background:#8a2be2;">📁 DOSYADAN VİDEO YÜKLE</button>
-                    <button class="btn-main" id="dVid" style="background:#005577;">🗑️ MEDYAYI TEMİZLE</button>
+                    <button class="btn-main" onclick="document.getElementById('fVid').click()" style="background:#6a00ff;">📁 DOSYA YÜKLE</button>
+                    <button class="btn-main" id="dVid" style="background:#aa0000;">🗑️ MEDYAYI TEMİZLE</button>
                     <button class="btn-main" id="sCl" style="background:#ff9900; color:#000;">📞 ARAMA BAŞLAT</button>
-                    <button class="btn-main" id="eCl" style="background:#7a0000;">🚫 ARAMAYI BİTİR</button>
-                    <button class="btn-main" id="cCl" style="background:#ff3e3e;">🗑️ CHATİ TEMİZLE</button>
+                    <button class="btn-main" id="eCl" style="background:#440000;">🚫 ARAMA BİTİR</button>
+                    <button class="btn-main" id="cCl" style="background:#ff3e3e;">🗑️ CHATİ SİL</button>
                 </div>
             </div>
         </div>
@@ -131,73 +142,81 @@
                 me = u; document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app').style.display = 'flex';
                 set(ref(db, 'online/' + u), true); onDisconnect(ref(db, 'online/' + u)).remove(); init();
-            } else alert("Erişim Reddedildi.");
+            } else alert("Geçersiz Kimlik!");
         };
 
         window.go = (id, el) => {
-            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('p-' + id).style.display = 'flex'; el.classList.add('active');
+            document.getElementById('p-' + id).classList.add('active'); el.classList.add('active');
         };
 
-        window.tabChat = (el) => { go('chat', el); setTimeout(() => { document.querySelector('.content').scrollTop = 999999; }, 100); };
+        window.tabChat = (el) => { go('chat', el); setTimeout(scrollChat, 100); };
+        function scrollChat() { const a = document.getElementById('scroll-area'); a.scrollTop = a.scrollHeight; }
 
         function init() {
+            // DUYURULARI ÇEK
             onValue(ref(db, 'ann'), s => {
                 const list = document.getElementById('ann-list'); list.innerHTML = '';
-                let dta = []; s.forEach(c => dta.unshift(c.val()));
-                dta.forEach(d => list.innerHTML += `<div class="box"><strong>${d.t}</strong><br><small>${d.time}</small></div>`);
-            });
-
-            onValue(ref(db, 'videos'), s => {
-                const list = document.getElementById('vid-list'); list.innerHTML = '';
-                let dta = []; s.forEach(c => dta.unshift(c.val()));
-                dta.forEach(d => {
-                    let mediaHtml = "";
-                    if(d.type === "file") {
-                        mediaHtml = `<video src="${d.url}" controls></video>`;
-                    } else if(d.url.includes('youtube.com') || d.url.includes('youtu.be')) {
-                        const vidId = d.url.includes('v=') ? d.url.split('v=')[1].split('&')[0] : d.url.split('/').pop();
-                        mediaHtml = `<iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe>`;
-                    } else {
-                        mediaHtml = `<iframe src="${d.url}"></iframe>`;
-                    }
-                    list.innerHTML += `<div class="v-card">${mediaHtml}<div class="v-title">${d.t}</div></div>`;
+                s.forEach(c => {
+                    const d = c.val();
+                    list.insertAdjacentHTML('afterbegin', `<div class="box"><strong>${d.t}</strong><br><small style="color:#666">${d.time}</small></div>`);
                 });
             });
 
+            // MEDYALARI ÇEK
+            onValue(ref(db, 'videos'), s => {
+                const list = document.getElementById('vid-list'); list.innerHTML = '';
+                s.forEach(c => {
+                    const d = c.val();
+                    let h = "";
+                    if(d.type === "file") h = `<video src="${d.url}" controls></video>`;
+                    else if(d.url.includes('youtu')) {
+                        const id = d.url.includes('v=') ? d.url.split('v=')[1].split('&')[0] : d.url.split('/').pop();
+                        h = `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`;
+                    } else h = `<iframe src="${d.url}"></iframe>`;
+                    list.insertAdjacentHTML('afterbegin', `<div class="v-card">${h}<div class="v-title">${d.t}</div></div>`);
+                });
+            });
+
+            // CHAT ÇEK
             onValue(ref(db, 'messages'), s => {
                 const list = document.getElementById('chat-list'); list.innerHTML = '';
                 s.forEach(c => {
                     const d = c.val();
-                    list.innerHTML += `<div class="chat-msg ${d.u === me ? 'me' : ''}"><div class="msg-inner"><small style="color:var(--p)">${d.u}</small><br>${d.t}</div></div>`;
+                    const cls = d.u === me ? 'me' : 'other';
+                    list.innerHTML += `<div class="chat-msg ${cls}"><div class="msg-inner"><div class="msg-u">${d.u}</div>${d.t}</div></div>`;
                 });
+                scrollChat();
             });
 
+            // ARAMA DURUMU
             onValue(ref(db, 'callRoom'), s => {
-                const st = document.getElementById('call-status'); const btn = document.getElementById('callBtn');
-                if(s.val() && s.val().active) {
-                    st.innerHTML = "🔴 AKTİF"; st.style.color = "red"; btn.classList.add('pulse'); window.roomUrl = s.val().url;
+                const d = s.val(); const btn = document.getElementById('callBtn'); const st = document.getElementById('call-status');
+                if(d && d.active) {
+                    btn.classList.add('pulse'); st.innerText = "HAT AKTİF - BAĞLAN"; st.style.color = "#ff3e3e"; window.roomUrl = d.url;
                 } else {
-                    st.innerHTML = "BEKLENİYOR..."; st.style.color = "#444"; btn.classList.remove('pulse'); window.roomUrl = null;
+                    btn.classList.remove('pulse'); st.innerText = "HAT BEKLENİYOR"; st.style.color = "#444"; window.roomUrl = null;
                 }
             });
 
+            // ONLİNE LİSTESİ (Admin Panel)
             onValue(ref(db, 'online'), s => {
                 const list = document.getElementById('u-list'); if(!list) return;
-                list.innerHTML = '<h4 style="font-size:0.8rem; color:#aaa; margin-bottom:10px;">AKTİF ÜYELER</h4>';
-                const onlines = s.val() || {};
-                Object.keys(users).forEach(u => {
-                    list.innerHTML += `<div class="user-row"><span>${u}</span><div class="online-dot ${onlines[u] ? 'active' : ''}"></div></div>`;
+                list.innerHTML = '<h4 style="color:#666; margin-bottom:10px;">AKTİF PERSONEL</h4>';
+                const on = s.val() || {};
+                Object.keys(users).forEach(usr => {
+                    list.innerHTML += `<div class="user-row"><span>${usr}</span><div class="online-dot ${on[usr]?'active':''}"></div></div>`;
                 });
             });
         }
 
-        window.startCall = () => { if(window.roomUrl) window.open(window.roomUrl, '_blank'); else alert("Hat yok!"); };
+        // ACTIONS
+        window.startCall = () => { if(window.roomUrl) window.open(window.roomUrl, '_blank'); else alert("Aktif hat yok!"); };
 
         document.getElementById('sB').onclick = () => {
-            const txt = document.getElementById('mI').value;
-            if(txt) { push(ref(db, 'messages'), { u: me, t: txt }); document.getElementById('mI').value = ''; }
+            const t = document.getElementById('mI').value.trim();
+            if(t) { push(ref(db, 'messages'), { u: me, t: t }); document.getElementById('mI').value = ''; }
         };
 
         document.getElementById('aB').onclick = () => {
@@ -207,41 +226,22 @@
             }
         };
 
-        /* TÜM ADMIN FONKSİYONLARI BURADA */
-        document.getElementById('nAnn').onclick = () => {
-            const t = prompt("Duyuru metni:");
-            if(t) push(ref(db, 'ann'), { t: t, time: new Date().toLocaleString('tr-TR') });
-        };
-
-        document.getElementById('dAnn').onclick = () => { if(confirm("Tüm duyurular silinsin mi?")) remove(ref(db, 'ann')); };
-
-        document.getElementById('nVid').onclick = () => {
-            const t = prompt("Başlık:"); const u = prompt("YouTube veya Site Linki:");
-            if(t && u) push(ref(db, 'videos'), { t: t, url: u, type: "link" });
-        };
+        // ADMIN BUTTONS
+        document.getElementById('nAnn').onclick = () => { const t = prompt("Duyuru:"); if(t) push(ref(db, 'ann'), { t: t, time: new Date().toLocaleString('tr-TR') }); };
+        document.getElementById('dAnn').onclick = () => { if(confirm("Duyurular silinsin mi?")) remove(ref(db, 'ann')); };
+        document.getElementById('nVid').onclick = () => { const t = prompt("Başlık:"); const u = prompt("Link:"); if(t && u) push(ref(db, 'videos'), { t: t, url: u, type: "link" }); };
+        document.getElementById('dVid').onclick = () => { if(confirm("Medya silinsin mi?")) remove(ref(db, 'videos')); };
+        document.getElementById('sCl').onclick = () => { const u = prompt("Arama Linki:"); if(u) set(ref(db, 'callRoom'), { active: true, url: u }); };
+        document.getElementById('eCl').onclick = () => { if(confirm("Bitir?")) set(ref(db, 'callRoom'), { active: false, url: "" }); };
+        document.getElementById('cCl').onclick = () => { if(confirm("Chat temizlensin mi?")) remove(ref(db, 'messages')); };
 
         document.getElementById('fVid').onchange = (e) => {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            const title = prompt("Video Başlığı:");
-            if(!title) return;
-            reader.onload = (el) => {
-                push(ref(db, 'videos'), { t: title, url: el.target.result, type: "file" });
-                alert("Video yüklendi!");
-            };
-            reader.readAsDataURL(file);
+            const file = e.target.files[0]; if(!file) return;
+            const title = prompt("Video Başlığı:"); if(!title) return;
+            const r = new FileReader();
+            r.onload = (el) => { push(ref(db, 'videos'), { t: title, url: el.target.result, type: "file" }); alert("Yüklendi!"); };
+            r.readAsDataURL(file);
         };
-
-        document.getElementById('dVid').onclick = () => { if(confirm("Medyalar silinsin mi?")) remove(ref(db, 'videos')); };
-
-        document.getElementById('sCl').onclick = () => { 
-            const u = prompt("Arama (Jitsi/Meet) Linki:"); 
-            if(u) set(ref(db, 'callRoom'), { active: true, url: u }); 
-        };
-
-        document.getElementById('eCl').onclick = () => { if(confirm("Arama bitirilsin mi?")) set(ref(db, 'callRoom'), { active: false, url: "" }); };
-
-        document.getElementById('cCl').onclick = () => { if(confirm("Chat temizlensin mi?")) remove(ref(db, 'messages')); };
     </script>
 </body>
 </html>
