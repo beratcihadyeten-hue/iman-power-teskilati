@@ -3,28 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İPT v6.7 | Direct Access</title>
+    <title>İPT v6.8 | Master Fix</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --p: #00ff41; --bg: #050505; --c: #111; --r: #ff3e3e; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; margin: 0; padding: 0; }
         html, body { height: 100%; width: 100%; overflow: hidden; position: fixed; background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; }
         
+        /* GİRİŞ EKRANI */
         #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; }
-        .login-card { width: 90%; max-width: 380px; padding: 30px; background: var(--c); border: 2px solid var(--p); border-radius: 20px; text-align: center; }
-        input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; margin-top: 10px; font-family: 'Rajdhani'; }
+        .login-card { width: 90%; max-width: 380px; padding: 30px; background: var(--c); border: 2px solid var(--p); border-radius: 20px; text-align: center; box-shadow: 0 0 20px rgba(0,255,65,0.2); }
+        input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; margin-top: 10px; font-family: 'Rajdhani'; transition: 0.3s; }
+        input:focus { border-color: var(--p); box-shadow: 0 0 10px rgba(0,255,65,0.3); }
         .btn-main { width: 100%; padding: 15px; background: var(--p); color: #000; border: none; border-radius: 8px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; margin-top: 15px; }
 
+        /* ANA YAPI */
         #app { display: none; height: 100%; flex-direction: column; position: relative; }
         .content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 100px; -webkit-overflow-scrolling: touch; }
         .page { display: none; width: 100%; flex-direction: column; }
         .page.active { display: flex; }
 
-        /* MEDYA GÜNCELLEME: Linkler de artık grid içinde iframe olarak açılıyor */
+        /* MEDYA & SİTE ÖNİZLEME */
         #vid-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
         .v-card { background: #111; border-radius: 10px; overflow: hidden; border: 1px solid #222; height: 220px; display: flex; flex-direction: column; }
         .v-card iframe, .v-card video, .v-card img { width: 100%; flex: 1; border: none; display: block; background: #000; }
-        .v-title { padding: 6px; font-size: 0.7rem; color: var(--p); text-align: center; font-weight: bold; background: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .v-title { padding: 6px; font-size: 0.7rem; color: var(--p); text-align: center; font-weight: bold; background: #000; }
 
         /* NAVİGASYON */
         nav { position: absolute; bottom: 0; width: 100%; height: 75px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 9000; }
@@ -32,23 +35,22 @@
         .nav-item.active { color: var(--p); }
 
         /* CHAT */
-        #chat-list { display: flex; flex-direction: column; gap: 8px; }
         .chat-input-area { position: fixed; bottom: 75px; left: 0; width: 100%; padding: 10px; background: #050505; display: flex; gap: 8px; border-top: 1px solid #222; z-index: 8500; }
         
-        /* ADMİN AKTİF LİSTESİ TASARIMI */
+        /* ADMİN AKTİFLER */
         .u-box { display: flex; justify-content: space-between; align-items: center; background: #111; padding: 12px; margin-bottom: 6px; border-radius: 8px; border: 1px solid #222; }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 5px var(--p); }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
         <div class="login-card">
-            <h1 style="color:var(--p); font-family:'Orbitron'">İM-P-T</h1>
-            <input type="text" id="u" placeholder="Kod Adı">
-            <input type="email" id="m" placeholder="Gmail">
+            <h1 style="color:var(--p); font-family:'Orbitron'; margin-bottom:10px;">İM-P-T</h1>
+            <p style="font-size:0.8rem; color:#666; margin-bottom:15px;">SİSTEME ERİŞİM İÇİN DOĞRULAMA GEREKLİ</p>
+            <input type="text" id="u" placeholder="Kullanıcı Adı">
             <input type="password" id="p" placeholder="Şifre">
-            <button class="btn-main" id="loginBtn">SİSTEME GİRİŞ</button>
+            <button class="btn-main" id="loginBtn">SİSTEME SIZ</button>
         </div>
     </div>
 
@@ -57,25 +59,25 @@
             <div id="p-ann" class="page active"><h2>📢 KAYITLAR</h2><div id="ann-list"></div></div>
             <div id="p-vid" class="page"><h2>🎬 MEDYA</h2><div id="vid-list"></div></div>
             <div id="p-call" class="page" style="height:80vh; justify-content:center; align-items:center;">
-                <button id="callBtn" onclick="startCall()" style="width:110px; height:110px; border-radius:50%; background:var(--p); border:none; font-size:3rem;">📞</button>
+                <button id="callBtn" onclick="startCall()" style="width:110px; height:110px; border-radius:50%; background:var(--p); border:none; font-size:3rem; cursor:pointer;">📞</button>
                 <h3 id="call-status" style="margin-top:20px; color:#444;">HAT BEKLENİYOR</h3>
             </div>
             <div id="p-chat" class="page">
-                <div id="chat-list"></div>
+                <div id="chat-list" style="padding-bottom:50px;"></div>
                 <div class="chat-input-area"><input type="text" id="mI" placeholder="Mesaj..."><button id="sB" class="btn-main" style="width:50px; margin:0; border-radius:50%;">➤</button></div>
             </div>
             <div id="p-adm" class="page">
                 <h2>🛡️ PANEL</h2>
-                <div id="adm-form"><input type="password" id="aK" placeholder="Key"><button class="btn-main" id="aB">YETKİ AL</button></div>
+                <div id="adm-form"><input type="password" id="aK" placeholder="Admin Key"><button class="btn-main" id="aB">YETKİ AL</button></div>
                 <div id="adm-ctrl" style="display:none;">
-                    <div id="u-list"></div> <!-- AKTİFLER BURADA -->
+                    <div id="u-list"></div>
                     <hr style="border:0; border-top:1px solid #333; margin:20px 0;">
                     <button class="btn-main" id="nAnn">📢 DUYURU EKLE</button>
-                    <button class="btn-main" id="nVid" style="background:#0055ff;">🔗 SİTE/MEDYA EKLE</button>
+                    <button class="btn-main" id="nVid" style="background:#0055ff;">🔗 LİNK/SİTE EKLE</button>
                     <input type="file" id="fInp" style="display:none;" accept="video/*,image/*">
                     <button class="btn-main" onclick="document.getElementById('fInp').click()" style="background:#6a00ff;">📁 DOSYA YÜKLE</button>
                     <button class="btn-main" id="sCl" style="background:#ff9900;">📞 HATTI AÇ</button>
-                    <button class="btn-main" style="background:var(--r);" id="clearAll">🔥 TÜM VERİLERİ SIFIRLA</button>
+                    <button class="btn-main" style="background:var(--r);" id="clearAll">🔥 SİSTEMİ SIFIRLA</button>
                 </div>
             </div>
         </div>
@@ -104,28 +106,37 @@
 
         const app = initializeApp(cfg);
         const db = getDatabase(app);
+
+        // KONTROL PANELİ: Şifreleri buraya sabitledim
         const users = {
-            "osimhendizkapağı": { m: "mdegirmenci244@gmail.com", p: ".321mustafa" },
-            "kuranokuyandefans": { m: "reozt2000@gmail.com", p: ".123reşit321." },
-            "yetimhanekundakçısı": { m: "g17058525@gmail.com", p: "ismailçipe" },
-            "müslimmendez": { m: "mustafaslan.gamer1907@gmail.com", p: "mus10ta20fa30" },
-            "duvaradam": { m: "beratcihadyeten@gmail.com", p: "geçityokberobaba41" }
+            "osimhendizkapağı": ".321mustafa",
+            "kuranokuyandefans": ".123reşit321.",
+            "yetimhanekundakçısı": "ismailçipe",
+            "müslimmendez": "mus10ta20fa30",
+            "duvaradam": "geçityokberobaba41"
         };
 
         let me = "";
 
+        // GİRİŞ FONKSİYONU - DÜZELTİLDİ
         document.getElementById('loginBtn').onclick = () => {
-            const u = document.getElementById('u').value.trim().toLowerCase();
-            const m = document.getElementById('m').value.trim().toLowerCase();
-            const p = document.getElementById('p').value.trim();
-            if(users[u] && users[u].m === m && users[u].p === p) {
-                me = u; 
+            const uInput = document.getElementById('u').value.trim().toLowerCase();
+            const pInput = document.getElementById('p').value.trim();
+            
+            if(users[uInput] && users[uInput] === pInput) {
+                me = uInput;
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app').style.display = 'flex';
-                set(ref(db, 'online/' + me), true); 
-                onDisconnect(ref(db, 'online/' + me)).remove();
+                
+                // Online Durumu
+                const onlineRef = ref(db, 'online/' + me);
+                set(onlineRef, true);
+                onDisconnect(onlineRef).remove();
+                
                 init();
-            } else alert("Hatalı Giriş!");
+            } else {
+                alert("ERİŞİM REDDEDİLDİ! Kullanıcı adı veya şifre hatalı.");
+            }
         };
 
         window.go = (id, el) => {
@@ -138,11 +149,11 @@
         window.tabChat = (el) => { go('chat', el); setTimeout(() => { const a = document.getElementById('scroll-area'); a.scrollTop = a.scrollHeight; }, 150); };
 
         function init() {
-            // AKTİF LİSTESİ FİX: Her zaman dinler
+            // Aktifler
             onValue(ref(db, 'online'), s => {
                 const list = document.getElementById('u-list');
                 if(!list) return;
-                list.innerHTML = '<h4 style="color:var(--p); margin-bottom:10px;">ŞU AN AKTİF OLANLAR</h4>';
+                list.innerHTML = '<h4 style="color:var(--p); margin-bottom:10px;">AKTİF ÜYELER</h4>';
                 const onlineData = s.val() || {};
                 Object.keys(users).forEach(user => {
                     const isOnline = onlineData[user] === true;
@@ -150,7 +161,7 @@
                 });
             });
 
-            // MEDYA LİSTESİ FİX: Linkler direk kart içinde açılır
+            // Medya (Linkleri direkt iframe açar)
             onValue(ref(db, 'videos'), s => {
                 const l = document.getElementById('vid-list'); l.innerHTML = '';
                 s.forEach(c => {
@@ -162,21 +173,20 @@
                     } else if(d.type === "file") {
                         content = d.url.startsWith("data:video") ? `<video src="${d.url}" controls></video>` : `<img src="${d.url}">`;
                     } else {
-                        // NORMAL LİNK İSE DOĞRUDAN KART İÇİNDE SİTEYİ AÇ
                         content = `<iframe src="${d.url}" sandbox="allow-scripts allow-same-origin"></iframe>`;
                     }
                     l.innerHTML = `<div class="v-card">${content}<div class="v-title">${d.t}</div></div>` + l.innerHTML;
                 });
             });
 
-            // Mesajlar, Duyurular ve Hat sistemleri aynı şekilde devam...
+            // Diğer Sistemler
             onValue(ref(db, 'ann'), s => {
                 const l = document.getElementById('ann-list'); l.innerHTML = '';
                 s.forEach(c => { const d = c.val(); l.innerHTML = `<div style="background:#111; padding:15px; border-radius:12px; margin-bottom:10px; border-left:4px solid var(--p);"><b>${d.t}</b><br><small style="opacity:0.5">${d.time}</small></div>` + l.innerHTML; });
             });
             onValue(ref(db, 'messages'), s => {
                 const l = document.getElementById('chat-list'); l.innerHTML = '';
-                s.forEach(c => { const d = c.val(); const cls = d.u === me ? 'me' : 'other'; l.innerHTML += `<div class="chat-msg" style="text-align:${d.u===me?'right':'left'}"><div style="display:inline-block; background:${d.u===me? 'var(--p)':'#222'}; color:${d.u===me?'#000':'#fff'}; padding:8px 12px; border-radius:10px; margin:4px; max-width:80%"><b>${d.u}:</b> ${d.t}</div></div>`; });
+                s.forEach(c => { const d = c.val(); l.innerHTML += `<div style="text-align:${d.u===me?'right':'left'}"><div style="display:inline-block; background:${d.u===me? 'var(--p)':'#222'}; color:${d.u===me?'#000':'#fff'}; padding:8px 12px; border-radius:10px; margin:4px; max-width:80%"><b>${d.u}:</b> ${d.t}</div></div>`; });
             });
             onValue(ref(db, 'callRoom'), s => {
                 const d = s.val(); const st = document.getElementById('call-status');
@@ -188,18 +198,10 @@
         window.startCall = () => window.roomUrl ? window.open(window.roomUrl) : alert("Hat kapalı.");
         document.getElementById('sB').onclick = () => { const t = document.getElementById('mI').value.trim(); if(t) { push(ref(db, 'messages'), { u: me, t: t }); document.getElementById('mI').value = ''; } };
         document.getElementById('aB').onclick = () => { if(document.getElementById('aK').value === "imanpoweradmini31") { document.getElementById('adm-form').style.display = 'none'; document.getElementById('adm-ctrl').style.display = 'block'; } };
-
         document.getElementById('nAnn').onclick = () => { const t = prompt("Duyuru:"); if(t) push(ref(db, 'ann'), { t, time: new Date().toLocaleString() }); };
-        document.getElementById('nVid').onclick = () => { const t = prompt("Başlık:"); const u = prompt("Site Linki:"); if(t && u) push(ref(db, 'videos'), { t, url: u, type: u.includes('youtu') ? 'yt' : 'link' }); };
+        document.getElementById('nVid').onclick = () => { const t = prompt("Başlık:"); const u = prompt("Site/Medya Linki:"); if(t && u) push(ref(db, 'videos'), { t, url: u, type: u.includes('youtu') ? 'yt' : 'link' }); };
         document.getElementById('sCl').onclick = () => { const u = prompt("Arama Linki:"); if(u) set(ref(db, 'callRoom'), { active: true, url: u }); };
-        
-        // TÜM VERİLERİ SİLME BUTONU
-        document.getElementById('clearAll').onclick = () => {
-            if(confirm("Tüm sistemi (Mesajlar, Medya, Duyurular) sıfırlamak istediğine emin misin?")) {
-                set(ref(db, '/'), { ann: {}, videos: {}, messages: {}, callRoom: { active: false }, online: {} }).then(() => alert("Sistem Tertemiz!"));
-            }
-        };
-
+        document.getElementById('clearAll').onclick = () => confirm("HER ŞEY silinecek! Emin misin?") && set(ref(db, '/'), { ann:{}, videos:{}, messages:{}, callRoom:{active:false}, online:{} });
         document.getElementById('fInp').onchange = (e) => {
             const f = e.target.files[0]; const t = prompt("Başlık:");
             if(!t) return; const r = new FileReader(); r.onload = (el) => push(ref(db, 'videos'), { t, url: el.target.result, type: "file" });
