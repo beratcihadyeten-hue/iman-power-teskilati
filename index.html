@@ -3,53 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İMAN POWER v7.2</title>
+    <title>İMAN POWER v7.3</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root { --p: #00ff41; --bg: #050505; --c: #111; --r: #ff3e3e; --b: #0070ff; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; margin: 0; padding: 0; }
         body { height: 100vh; background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
 
-        /* GİRİŞ SİSTEMİ (SIKI DENETİM) */
+        /* LOGIN SCREEN */
         #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 10000; }
-        .login-box { width: 90%; max-width: 380px; padding: 35px; background: var(--c); border: 2px solid var(--p); border-radius: 15px; text-align: center; box-shadow: 0 0 20px rgba(0,255,65,0.2); }
-        .glitch { font-family: 'Orbitron'; font-weight: 900; font-size: 2.2rem; color: var(--p); margin-bottom: 25px; letter-spacing: 3px; }
-        input { width: 100%; padding: 14px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; margin-bottom: 12px; font-family: 'Rajdhani'; font-size: 1rem; }
-        input:focus { border-color: var(--p); }
+        .login-box { width: 90%; max-width: 380px; padding: 35px; background: var(--c); border: 2px solid var(--p); border-radius: 15px; text-align: center; }
+        .glitch { font-family: 'Orbitron'; font-weight: 900; font-size: 2.2rem; color: var(--p); margin-bottom: 25px; }
+        input { width: 100%; padding: 14px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; margin-bottom: 12px; font-family: 'Rajdhani'; }
         .btn-access { width: 100%; padding: 16px; background: var(--p); color: #000; border: none; border-radius: 8px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; }
 
-        /* ANA EKRAN */
+        /* APP STRUCTURE */
         #app { display: none; height: 100vh; flex-direction: column; }
         .header { padding: 15px; background: #000; border-bottom: 1px solid #222; text-align: center; font-family: 'Orbitron'; color: var(--p); font-size: 1.4rem; }
         .content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 100px; }
         .page { display: none; }
         .page.active { display: block; }
 
-        /* DUYURULAR */
+        /* CARDS */
         .ann-box { background: #111; padding: 15px; border-radius: 10px; margin-bottom: 12px; border-left: 4px solid var(--p); }
-        .ann-time { font-size: 0.65rem; color: #666; display: block; margin-top: 8px; font-family: 'Orbitron'; }
+        .ann-time { font-size: 0.65rem; color: #666; display: block; margin-top: 8px; }
 
-        /* MEDYA */
-        #vid-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .v-card { background: #111; border-radius: 8px; border: 1px solid #222; height: 210px; display: flex; flex-direction: column; overflow: hidden; }
-        .v-card iframe, .v-card video, .v-card img { width: 100%; flex: 1; border: none; background: #000; object-fit: cover; }
-        .v-title { padding: 6px; font-size: 0.75rem; text-align: center; background: #000; color: var(--p); }
+        /* MEDIA CARDS & VISIT BUTTON */
+        #vid-list { display: grid; grid-template-columns: repeat(1, 1fr); gap: 15px; }
+        .v-card { background: #111; border-radius: 12px; border: 1px solid #222; overflow: hidden; display: flex; flex-direction: column; }
+        .v-card iframe, .v-card video, .v-card img { width: 100%; height: 200px; border: none; background: #000; object-fit: contain; }
+        .v-info { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+        .v-title { color: var(--p); font-weight: bold; font-size: 0.9rem; }
+        .btn-visit { background: var(--b); color: #fff; text-decoration: none; text-align: center; padding: 8px; border-radius: 5px; font-size: 0.7rem; font-family: 'Orbitron'; }
 
-        /* ADMİN AKTİF LİSTESİ */
+        /* ADMIN & ONLINE */
         .u-box { display: flex; justify-content: space-between; padding: 10px; background: #000; margin-bottom: 5px; border-radius: 5px; border: 1px solid #222; font-size: 0.8rem; }
         .admin-section { background: #0d0d0d; border: 1px solid #222; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
         .btn-action { width: 100%; padding: 12px; margin-top: 8px; border: none; border-radius: 6px; font-family: 'Orbitron'; font-size: 0.7rem; cursor: pointer; font-weight: bold; }
-        .btn-del { background: rgba(255, 62, 62, 0.1); color: var(--r); border: 1px solid var(--r); }
-        .btn-add { background: var(--p); color: #000; }
 
-        /* NAV */
+        /* NAVIGATION */
         nav { position: fixed; bottom: 0; width: 100%; height: 75px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; }
         .nav-item { color: #444; font-family: 'Orbitron'; font-size: 0.65rem; text-align: center; cursor: pointer; }
         .nav-item.active { color: var(--p); }
 
         /* CHAT */
         .chat-wrap { display: flex; flex-direction: column; gap: 10px; }
-        .chat-msg { background: #222; padding: 10px; border-radius: 10px; max-width: 85%; align-self: flex-start; word-break: break-all; }
+        .chat-msg { background: #222; padding: 10px; border-radius: 10px; max-width: 85%; align-self: flex-start; }
         .chat-msg.me { background: var(--p); color: #000; align-self: flex-end; }
         .chat-input { position: fixed; bottom: 75px; left: 0; width: 100%; display: flex; padding: 10px; background: var(--bg); border-top: 1px solid #222; }
     </style>
@@ -59,10 +58,10 @@
     <div id="login-screen">
         <div class="login-box">
             <div class="glitch">İMAN POWER</div>
-            <input type="email" id="g" placeholder="Gmail Adresiniz">
-            <input type="text" id="u" placeholder="Kod Adınız">
-            <input type="password" id="p" placeholder="Erişim Şifreniz">
-            <button class="btn-access" id="loginBtn">SİSTEME GİRİŞ YAP</button>
+            <input type="email" id="g" placeholder="Gmail">
+            <input type="text" id="u" placeholder="Kod Adı">
+            <input type="password" id="p" placeholder="Şifre">
+            <button class="btn-access" id="loginBtn">GİRİŞ</button>
         </div>
     </div>
 
@@ -73,35 +72,31 @@
             <div id="p-vid" class="page"><div id="vid-list"></div></div>
             <div id="p-call" class="page">
                 <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <button id="callBtn" style="width:120px; height:120px; border-radius:50%; background:var(--p); border:none; font-size:3.5rem; cursor:pointer;" onclick="startCall()">📞</button>
+                    <button id="callBtn" style="width:120px; height:120px; border-radius:50%; background:var(--p); border:none; font-size:3.5rem;" onclick="startCall()">📞</button>
                     <h2 id="call-status" style="margin-top:25px; color:#444;">HAT BEKLENİYOR</h2>
                 </div>
             </div>
             <div id="p-chat" class="page">
                 <div id="chat-list" class="chat-wrap"></div>
-                <div class="chat-input"><input type="text" id="mI" placeholder="Mesaj..." style="margin:0; flex:1;"><button id="sB" style="width:60px; background:var(--p); border:none;">➤</button></div>
+                <div class="chat-input"><input type="text" id="mI" placeholder="Mesaj..."><button id="sB" style="width:60px; background:var(--p);">➤</button></div>
             </div>
             <div id="p-adm" class="page">
-                <div id="adm-form"><input type="password" id="aK" placeholder="Admin Anahtarı"><button class="btn-access" id="aB">YETKİ VER</button></div>
+                <div id="adm-form"><input type="password" id="aK" placeholder="Admin Key"><button class="btn-access" id="aB">YETKİ VER</button></div>
                 <div id="adm-ctrl" style="display:none;">
-                    <!-- AKTİFLER BURADA -->
                     <div id="u-list" class="admin-section"></div>
                     <div class="admin-section">
-                        <button class="btn-action btn-add" id="nAnn">📢 DUYURU EKLE</button>
-                        <button class="btn-action btn-del" id="delAnn">DUYURULARI TEMİZLE</button>
+                        <button class="btn-action" style="background:var(--p);" id="nAnn">📢 DUYURU EKLE</button>
+                        <button class="btn-action" style="color:var(--r); border:1px solid var(--r);" id="delAnn">TEMİZLE</button>
                     </div>
                     <div class="admin-section">
-                        <button class="btn-action btn-add" id="nVid" style="background:var(--b); color:#fff;">🔗 LİNK EKLE</button>
-                        <input type="file" id="fInp" style="display:none;" accept="image/*,video/*">
-                        <button class="btn-action btn-add" onclick="document.getElementById('fInp').click()" style="background:#6a00ff; color:#fff;">📁 DOSYA YÜKLE</button>
-                        <button class="btn-action btn-del" id="delVid">MEDYAYI TEMİZLE</button>
+                        <button class="btn-action" style="background:var(--b); color:#fff;" id="nVid">🔗 LİNK EKLE</button>
+                        <input type="file" id="fInp" style="display:none;">
+                        <button class="btn-action" style="background:#6a00ff; color:#fff;" onclick="document.getElementById('fInp').click()">📁 DOSYA YÜKLE</button>
                     </div>
                     <div class="admin-section">
-                        <button class="btn-action btn-add" id="sCl" style="background:#ff9900;">📞 HATTI AÇ</button>
-                        <button class="btn-action btn-del" id="stopCl" style="background:#555; color:#fff; border:none;">🚫 HATTI KAPAT</button>
-                        <button class="btn-action btn-del" id="delChat">SOHBETİ TEMİZLE</button>
+                        <button class="btn-action" style="background:#ff9900;" id="sCl">📞 HATTI AÇ</button>
+                        <button class="btn-action" style="background:#555; color:#fff;" id="stopCl">🚫 KAPAT</button>
                     </div>
-                    <button class="btn-action btn-del" id="clearAll" style="background:var(--r); color:#fff;">🔥 SİSTEMİ SIFIRLA</button>
                 </div>
             </div>
         </div>
@@ -130,7 +125,7 @@
         const app = initializeApp(cfg);
         const db = getDatabase(app);
 
-        // KESİN LİSTE (HATA PAYI SIFIR)
+        // KESİN LİSTE (image_6615e1.png verileri)
         const validUsers = {
             "osimhendizkapağı": { m: "mdegirmenci244@gmail.com", p: ".321mustafa" },
             "kuranokuyandefans": { m: "resit2000@gmail.com", p: ".123resit321." },
@@ -142,21 +137,19 @@
         let me = "";
 
         document.getElementById('loginBtn').onclick = () => {
-            const gInput = document.getElementById('g').value.trim().toLowerCase();
-            const uInput = document.getElementById('u').value.trim().toLowerCase();
-            const pInput = document.getElementById('p').value.trim();
+            const gVal = document.getElementById('g').value.trim().toLowerCase();
+            const uVal = document.getElementById('u').value.trim().toLowerCase();
+            const pVal = document.getElementById('p').value.trim();
 
-            const user = validUsers[uInput];
-
-            if(user && user.m === gInput && user.p === pInput) {
-                me = uInput;
+            if (validUsers[uVal] && validUsers[uVal].m === gVal && validUsers[uVal].p === pVal) {
+                me = uVal;
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app').style.display = 'flex';
                 set(ref(db, 'online/' + me), true);
                 onDisconnect(ref(db, 'online/' + me)).remove();
                 init();
             } else {
-                alert("GİRİŞ BAŞARISIZ: Gmail, Kod Adı veya Şifre uyuşmuyor!");
+                alert("Bilgiler Eşleşmiyor! Tekrar Kontrol Et.");
             }
         };
 
@@ -174,23 +167,42 @@
                 const l = document.getElementById('ann-list'); l.innerHTML = '';
                 s.forEach(c => { const d = c.val(); l.innerHTML = `<div class="ann-box">${d.t}<span class="ann-time">${d.time}</span></div>` + l.innerHTML; });
             });
+
             onValue(ref(db, 'videos'), s => {
                 const l = document.getElementById('vid-list'); l.innerHTML = '';
                 s.forEach(c => {
                     const d = c.val();
-                    let h = d.url.startsWith('data:') ? (d.url.includes('video') ? `<video src="${d.url}" controls></video>` : `<img src="${d.url}">`) : (d.url.includes('youtu') ? `<iframe src="https://www.youtube.com/embed/${d.url.split('v=')[1]}"></iframe>` : `<iframe src="${d.url}"></iframe>`);
-                    l.innerHTML = `<div class="v-card">${h}<div class="v-title">${d.t}</div></div>` + l.innerHTML;
+                    let h = "";
+                    if(d.url.startsWith('data:')) {
+                        h = d.url.includes('video') ? `<video src="${d.url}" controls></video>` : `<img src="${d.url}">`;
+                    } else if(d.url.includes('youtu')) {
+                        h = `<iframe src="https://www.youtube.com/embed/${d.url.split('v=')[1] || d.url.split('/').pop()}"></iframe>`;
+                    } else {
+                        h = `<iframe src="${d.url}"></iframe>`;
+                    }
+
+                    l.innerHTML = `
+                        <div class="v-card">
+                            ${h}
+                            <div class="v-info">
+                                <span class="v-title">${d.t}</span>
+                                <a href="${d.url}" target="_blank" class="btn-visit">SİTEYİ ZİYARET ET</a>
+                            </div>
+                        </div>` + l.innerHTML;
                 });
             });
+
             onValue(ref(db, 'messages'), s => {
                 const l = document.getElementById('chat-list'); l.innerHTML = '';
                 s.forEach(c => { const d = c.val(); l.innerHTML += `<div class="chat-msg ${d.u===me?'me':''}"><b>${d.u}:</b> ${d.t}</div>`; });
             });
+
             onValue(ref(db, 'callRoom'), s => {
-                const d = s.val(); const st = document.getElementById('call-status'); const btn = document.getElementById('callBtn');
-                if(d && d.active) { st.innerText = "HAT AKTİF"; st.style.color = "var(--p)"; window.roomUrl = d.url; btn.style.boxShadow = "0 0 20px var(--p)"; }
-                else { st.innerText = "HAT BEKLENİYOR"; st.style.color = "#444"; window.roomUrl = null; btn.style.boxShadow = "none"; }
+                const d = s.val(); const st = document.getElementById('call-status');
+                if(d && d.active) { st.innerText = "HAT AKTİF"; st.style.color = "var(--p)"; window.roomUrl = d.url; }
+                else { st.innerText = "HAT BEKLENİYOR"; st.style.color = "#444"; window.roomUrl = null; }
             });
+
             onValue(ref(db, 'online'), s => {
                 const l = document.getElementById('u-list'); if(!l) return;
                 l.innerHTML = '<h4 style="color:var(--p); margin-bottom:10px;">AKTİF ÜYELER</h4>';
@@ -208,12 +220,8 @@
             const f = e.target.files[0]; const t = prompt("Dosya Başlığı:"); if(!t) return;
             const r = new FileReader(); r.onload = (el) => push(ref(db, 'videos'), { t, url: el.target.result }); r.readAsDataURL(f);
         };
-        document.getElementById('sCl').onclick = () => { const u = prompt("Arama Linki:"); if(u) set(ref(db, 'callRoom'), { active: true, url: u }); };
+        document.getElementById('sCl').onclick = () => { const u = prompt("Link:"); if(u) set(ref(db, 'callRoom'), { active: true, url: u }); };
         document.getElementById('stopCl').onclick = () => set(ref(db, 'callRoom'), { active: false, url: "" });
-        document.getElementById('delAnn').onclick = () => set(ref(db, 'ann'), {});
-        document.getElementById('delVid').onclick = () => set(ref(db, 'videos'), {});
-        document.getElementById('delChat').onclick = () => set(ref(db, 'messages'), {});
-        document.getElementById('clearAll').onclick = () => confirm("TÜM VERİLER SİLİNSİN Mİ?") && set(ref(db, '/'), { ann:{}, videos:{}, messages:{}, callRoom:{active:false}, online:{} });
         document.getElementById('sB').onclick = () => { const t = document.getElementById('mI').value.trim(); if(t) { push(ref(db, 'messages'), { u: me, t: t }); document.getElementById('mI').value = ''; } };
         window.startCall = () => window.roomUrl ? window.open(window.roomUrl) : alert("Hat kapalı.");
     </script>
