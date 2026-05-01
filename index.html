@@ -3,61 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İPT v6.5 | Fixed</title>
+    <title>İPT v6.6 | Armor Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --p: #00ff41; --bg: #050505; --c: #111; --r: #ff3e3e; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; margin: 0; padding: 0; }
-        body { background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; height: 100vh; overflow: hidden; position: fixed; width: 100%; }
         
-        /* LOGIN FIX: Absolute yerine fixed ve yüksek z-index */
+        /* EKRAN SABİTLEME: Menülerin kaybolmasını önler */
+        html, body { height: 100%; width: 100%; overflow: hidden; position: fixed; background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; }
+        
         #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; }
         .login-card { width: 90%; max-width: 380px; padding: 30px; background: var(--c); border: 2px solid var(--p); border-radius: 20px; text-align: center; }
         input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; margin-top: 10px; font-family: 'Rajdhani'; }
         .btn-main { width: 100%; padding: 15px; background: var(--p); color: #000; border: none; border-radius: 8px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; margin-top: 15px; }
 
-        #app { display: none; height: 100vh; flex-direction: column; position: relative; z-index: 10; }
-        .content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 180px; -webkit-overflow-scrolling: touch; }
+        /* ANA KONTEYNER: Navigasyonun her zaman altta kalmasını sağlar */
+        #app { display: none; height: 100%; flex-direction: column; position: relative; }
+        
+        .content { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 15px; 
+            padding-bottom: 100px; /* Navigasyon için güvenli alan */
+            -webkit-overflow-scrolling: touch;
+        }
+
         .page { display: none; width: 100%; flex-direction: column; }
         .page.active { display: flex; }
 
-        /* GRID DÜZENİ */
-        #vid-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-        .v-card { background: #111; border-radius: 10px; overflow: hidden; border: 1px solid #222; position: relative; }
+        /* MEDYA GRID DÜZENİ: Taşmaları engellemek için minmax kullanıldı */
+        #vid-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
+        .v-card { background: #111; border-radius: 10px; overflow: hidden; border: 1px solid #222; }
         .v-card iframe, .v-card video, .v-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border: none; display: block; }
-        .v-title { padding: 6px; font-size: 0.7rem; color: var(--p); text-align: center; font-weight: bold; background: rgba(0,0,0,0.8); }
+        .v-title { padding: 6px; font-size: 0.7rem; color: var(--p); text-align: center; font-weight: bold; background: rgba(0,0,0,0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* LİNK ÖNİZLEME */
-        .link-card { grid-column: span 2; padding: 18px; background: #151515; border-left: 4px solid var(--p); color: #fff; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222; }
+        .link-card { grid-column: span 2; padding: 15px; background: #151515; border-left: 4px solid var(--p); color: #fff; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222; font-size: 0.85rem; }
 
-        /* MODAL FIX */
+        /* MODAL */
         #preview-modal { position: fixed; inset: 0; background: #000; z-index: 10000; display: none; flex-direction: column; }
         #preview-modal.active { display: flex; }
-        #preview-frame { flex: 1; width: 100%; border: none; background: #fff; }
 
-        /* NAV FIX */
-        nav { position: fixed; bottom: 0; width: 100%; height: 75px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 500; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #444; font-size: 0.6rem; cursor: pointer; transition: 0.3s; }
+        /* NAVİGASYON: En yüksek z-index ve sabit pozisyon */
+        nav { 
+            position: absolute; 
+            bottom: 0; 
+            left: 0;
+            width: 100%; 
+            height: 75px; 
+            background: #000; 
+            border-top: 1px solid #222; 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            z-index: 9000; 
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #444; font-size: 0.65rem; cursor: pointer; transition: 0.2s; font-family: 'Orbitron'; }
         .nav-item.active { color: var(--p); }
 
-        /* CHAT AREA */
-        .chat-input-area { position: fixed; bottom: 80px; left: 0; width: 100%; padding: 12px; background: rgba(5,5,5,0.95); display: flex; gap: 8px; border-top: 1px solid #222; z-index: 400; }
-        .chat-input-area input { flex: 1; margin: 0; border-radius: 20px; }
+        /* CHAT ALANI FIX */
+        #p-chat { height: 100%; position: relative; }
+        #chat-list { display: flex; flex-direction: column; gap: 8px; padding-bottom: 70px; }
+        .chat-input-area { position: fixed; bottom: 75px; left: 0; width: 100%; padding: 10px; background: #050505; display: flex; gap: 8px; border-top: 1px solid #222; z-index: 8500; }
+        .chat-input-area input { flex: 1; border-radius: 20px; padding-left: 15px; }
+
+        /* ADMİN ALANI */
+        .adm-btn-red { background: var(--r) !important; color: #fff !important; }
     </style>
 </head>
 <body>
 
     <div id="preview-modal">
-        <div style="height:50px; background:#111; display:flex; align-items:center; justify-content:space-between; padding:0 15px;">
-            <span id="modal-title" style="color:var(--p); font-size:0.8rem;">ÖNİZLEME</span>
-            <button onclick="closePreview()" style="background:var(--r); color:#fff; border:none; padding:8px 15px; border-radius:5px;">KAPAT</button>
+        <div style="height:50px; background:#111; display:flex; align-items:center; justify-content:space-between; padding:0 15px; border-bottom: 1px solid var(--p);">
+            <span id="modal-title" style="color:var(--p); font-size:0.8rem; font-weight:bold;">ÖNİZLEME</span>
+            <button onclick="closePreview()" style="background:var(--r); color:#fff; border:none; padding:8px 15px; border-radius:5px; font-weight:bold;">KAPAT</button>
         </div>
         <iframe id="preview-frame"></iframe>
     </div>
 
     <div id="login-screen">
         <div class="login-card">
-            <h1 style="color:var(--p); font-family:'Orbitron'">İM-P-T</h1>
+            <h1 style="color:var(--p); font-family:'Orbitron'; letter-spacing: 3px;">İM-P-T</h1>
             <input type="text" id="u" placeholder="Kod Adı">
             <input type="email" id="m" placeholder="Gmail">
             <input type="password" id="p" placeholder="Şifre">
@@ -67,33 +92,45 @@
 
     <div id="app">
         <div class="content" id="scroll-area">
+            <!-- SAYFALAR -->
             <div id="p-ann" class="page active"><h2>📢 KAYITLAR</h2><div id="ann-list"></div></div>
+            
             <div id="p-vid" class="page"><h2>🎬 MEDYA</h2><div id="vid-list"></div></div>
-            <div id="p-call" class="page" style="height:100%; justify-content:center; align-items:center;">
+            
+            <div id="p-call" class="page" style="height:80vh; justify-content:center; align-items:center;">
                 <div class="call-btn-wrapper" id="callWrap" style="position:relative; width:140px; height:140px; display:flex; justify-content:center; align-items:center;">
                     <div class="pulse-ring" style="position:absolute; width:100%; height:100%; background:var(--p); border-radius:50%; opacity:0;"></div>
-                    <button id="callBtn" onclick="startCall()" style="width:110px; height:110px; border-radius:50%; background:var(--p); border:none; font-size:3rem; z-index:10;">📞</button>
+                    <button id="callBtn" onclick="startCall()" style="width:110px; height:110px; border-radius:50%; background:var(--p); border:none; font-size:3rem; z-index:10; cursor:pointer;">📞</button>
                 </div>
-                <h3 id="call-status" style="margin-top:20px; color:#444;">HAT BEKLENİYOR</h3>
+                <h3 id="call-status" style="margin-top:20px; color:#444; font-family:'Orbitron';">HAT BEKLENİYOR</h3>
             </div>
-            <div id="p-chat" class="page"><div id="chat-list"></div><div class="chat-input-area"><input type="text" id="mI" placeholder="Mesaj..."><button id="sB" class="btn-main" style="width:50px; margin:0; border-radius:50%;">➤</button></div></div>
+            
+            <div id="p-chat" class="page">
+                <div id="chat-list"></div>
+                <div class="chat-input-area">
+                    <input type="text" id="mI" placeholder="Mesaj yaz...">
+                    <button id="sB" class="btn-main" style="width:50px; margin:0; border-radius:50%;">➤</button>
+                </div>
+            </div>
+            
             <div id="p-adm" class="page">
-                <h2>🛡️ PANEL</h2>
-                <div id="adm-form"><input type="password" id="aK" placeholder="Key"><button class="btn-main" id="aB">YETKİ AL</button></div>
+                <h2>🛡️ KOMUTA MERKEZİ</h2>
+                <div id="adm-form"><input type="password" id="aK" placeholder="Admin Key"><button class="btn-main" id="aB">YETKİ AL</button></div>
                 <div id="adm-ctrl" style="display:none;">
-                    <div id="u-list"></div>
+                    <div id="u-list" style="margin-bottom:20px;"></div>
                     <button class="btn-main" id="nAnn">📢 DUYURU EKLE</button>
-                    <button class="btn-main adm-btn-red" id="dAnn">🗑️ DUYURU SİL</button>
-                    <button class="btn-main" id="nVid">🎬 LİNK EKLE</button>
+                    <button class="btn-main adm-btn-red" id="dAnn">🗑️ DUYURU TEMİZLE</button>
+                    <button class="btn-main" id="nVid" style="background:#0055ff; color:#fff;">🎬 LİNK EKLE</button>
                     <input type="file" id="fInp" style="display:none;" accept="video/*,image/*">
                     <button class="btn-main" onclick="document.getElementById('fInp').click()" style="background:#6a00ff;">📁 DOSYA YÜKLE</button>
-                    <button class="btn-main adm-btn-red" id="dVid">🗑️ MEDYA SİL</button>
-                    <button class="btn-main" id="sCl" style="background:#ff9900;">📞 HATTI AÇ</button>
-                    <button class="btn-main adm-btn-red" id="eCl">🚫 HATTI KAPAT</button>
+                    <button class="btn-main adm-btn-red" id="dVid">🗑️ MEDYA TEMİZLE</button>
+                    <button class="btn-main" id="sCl" style="background:#ff9900; color:#000;">📞 ARAMA BAŞLAT</button>
+                    <button class="btn-main adm-btn-red" id="eCl">🚫 ARAMA BİTİR</button>
                     <button class="btn-main adm-btn-red" id="cCl">🗑️ CHAT SIFIRLA</button>
                 </div>
             </div>
         </div>
+
         <nav>
             <div class="nav-item active" onclick="go('ann', this)">📢<span>KAYIT</span></div>
             <div class="nav-item" onclick="go('vid', this)">🎬<span>MEDYA</span></div>
@@ -134,25 +171,25 @@
             const p = document.getElementById('p').value.trim();
             if(users[u] && users[u].m === m && users[u].p === p) {
                 me = u; 
-                document.getElementById('login-screen').style.zIndex = "-1"; // Arkaya at
-                document.getElementById('login-screen').style.display = "none";
+                document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app').style.display = 'flex';
                 set(ref(db, 'online/' + me), true); 
                 onDisconnect(ref(db, 'online/' + me)).remove();
                 init();
-            } else alert("Reddedildi.");
+            } else alert("Red!");
         };
 
         window.go = (id, el) => {
-            // Sayfa geçişlerinde login ekranını zorla gizle
-            document.getElementById('login-screen').style.display = 'none';
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById('p-' + id).classList.add('active'); 
             el.classList.add('active');
         };
 
-        window.tabChat = (el) => { go('chat', el); setTimeout(() => { const a = document.getElementById('scroll-area'); a.scrollTop = a.scrollHeight; }, 150); };
+        window.tabChat = (el) => { 
+            go('chat', el); 
+            setTimeout(() => { const a = document.getElementById('scroll-area'); a.scrollTop = a.scrollHeight; }, 150); 
+        };
 
         window.openPreview = (url, title) => {
             document.getElementById('modal-title').innerText = title;
@@ -186,7 +223,7 @@
 
             onValue(ref(db, 'messages'), s => {
                 const l = document.getElementById('chat-list'); l.innerHTML = '';
-                s.forEach(c => { const d = c.val(); const cls = d.u === me ? 'me' : 'other'; l.innerHTML += `<div class="chat-msg ${cls}"><div class="msg-inner"><b>${d.u}:</b> ${d.t}</div></div>`; });
+                s.forEach(c => { const d = c.val(); const cls = d.u === me ? 'me' : 'other'; l.innerHTML += `<div class="chat-msg ${cls}" style="display:flex; flex-direction:column; margin-bottom:10px;"><div class="msg-inner" style="background:${d.u === me ? 'var(--p)' : '#222'}; color:${d.u === me ? '#000' : '#fff'}; padding:10px; border-radius:10px; align-self:${d.u === me ? 'flex-end' : 'flex-start'}; max-width:85%;"><b>${d.u}:</b> ${d.t}</div></div>`; });
             });
 
             onValue(ref(db, 'callRoom'), s => {
@@ -197,28 +234,28 @@
 
             onValue(ref(db, 'online'), s => {
                 const l = document.getElementById('u-list'); if(!l) return;
-                l.innerHTML = '<h4 style="color:var(--p); margin:10px 0;">AKTİF</h4>';
+                l.innerHTML = '<h4 style="color:var(--p); margin:10px 0;">AKTİF ÜYELER</h4>';
                 const on = s.val() || {};
                 Object.keys(users).forEach(u => l.innerHTML += `<div style="display:flex; justify-content:space-between; background:#111; padding:10px; margin-bottom:5px; border-radius:5px;">${u} <div style="width:10px; height:10px; border-radius:50%; background:${on[u]?'var(--p)':'#333'}"></div></div>`);
             });
         }
 
-        window.startCall = () => window.roomUrl ? window.open(window.roomUrl) : alert("Hat kapalı.");
+        window.startCall = () => window.roomUrl ? window.open(window.roomUrl) : alert("Arama aktif değil.");
         document.getElementById('sB').onclick = () => { const t = document.getElementById('mI').value.trim(); if(t) { push(ref(db, 'messages'), { u: me, t: t }); document.getElementById('mI').value = ''; } };
         document.getElementById('aB').onclick = () => { if(document.getElementById('aK').value === "imanpoweradmini31") { document.getElementById('adm-form').style.display = 'none'; document.getElementById('adm-ctrl').style.display = 'block'; } };
 
         document.getElementById('nAnn').onclick = () => { const t = prompt("Duyuru:"); if(t) push(ref(db, 'ann'), { t, time: new Date().toLocaleString() }); };
-        document.getElementById('dAnn').onclick = () => confirm("Sil?") && remove(ref(db, 'ann'));
+        document.getElementById('dAnn').onclick = () => confirm("Hepsi silinsin mi?") && remove(ref(db, 'ann'));
         document.getElementById('nVid').onclick = () => { const t = prompt("Başlık:"); const u = prompt("Link:"); if(t && u) push(ref(db, 'videos'), { t, url: u, type: u.includes('youtu') ? 'yt' : 'link' }); };
         document.getElementById('fInp').onchange = (e) => {
             const f = e.target.files[0]; const t = prompt("Başlık:");
             if(!t) return; const r = new FileReader(); r.onload = (el) => push(ref(db, 'videos'), { t, url: el.target.result, type: "file" });
             r.readAsDataURL(f);
         };
-        document.getElementById('dVid').onclick = () => confirm("Sil?") && remove(ref(db, 'videos'));
-        document.getElementById('sCl').onclick = () => { const u = prompt("Arama Linki:"); if(u) set(ref(db, 'callRoom'), { active: true, url: u }); };
+        document.getElementById('dVid').onclick = () => confirm("Hepsi silinsin mi?") && remove(ref(db, 'videos'));
+        document.getElementById('sCl').onclick = () => { const u = prompt("Link:"); if(u) set(ref(db, 'callRoom'), { active: true, url: u }); };
         document.getElementById('eCl').onclick = () => set(ref(db, 'callRoom'), { active: false });
-        document.getElementById('cCl').onclick = () => confirm("Chat Sil?") && remove(ref(db, 'messages'));
+        document.getElementById('cCl').onclick = () => confirm("Sıfırlansın mı?") && remove(ref(db, 'messages'));
     </script>
 </body>
 </html>
